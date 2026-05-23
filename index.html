@@ -561,6 +561,29 @@ h1 .sub {
   border: 1px solid rgba(201,150,42,0.3);
 }
 
+.osi-remove-me {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 9px 14px;
+  margin-bottom: 4px;
+  background: none;
+  border: 1.5px solid rgba(155,28,28,0.3);
+  border-radius: 8px;
+  color: var(--red);
+  font-family: 'Noto Sans SC', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.osi-remove-me:hover, .osi-remove-me:active {
+  background: var(--red-dark);
+  border-color: var(--red-dark);
+  color: white;
+}
+
 .osi-tag {
   font-size: 11px;
   background: var(--gold-pale);
@@ -1019,10 +1042,23 @@ footer {
   color: var(--gold);
   font-weight: 500;
   margin-top: 2px;
+  background: none;
+  border: none;
+  padding: 0;
+  font-family: 'Noto Sans SC', sans-serif;
+  cursor: default;
 }
 .order-count-badge.you-in {
   color: #2d6a4f;
   font-weight: 700;
+}
+.order-count-badge.removable {
+  cursor: pointer;
+  text-decoration: underline dotted;
+  text-underline-offset: 3px;
+}
+.order-count-badge.removable:active {
+  opacity: 0.6;
 }
 
 
@@ -1740,6 +1776,69 @@ async function confirmOrder() {
   }
 }
 
+function renderOrderList(container, orders, keys) {
+  // Group by category
+  const byCat = {};
+  keys.forEach(key => {
+    const cat = key.split('::')[0];
+    if (!byCat[cat]) byCat[cat] = [];
+    byCat[cat].push(key);
+  });
+
+  MENU.forEach(cat => {
+    const catKeys = byCat[cat.cat];
+    if (!catKeys || catKeys.length === 0) return;
+
+    const catHeader = document.createElement('div');
+    catHeader.className = 'osi-cat-header';
+    catHeader.textContent = cat.cat;
+    container.appendChild(catHeader);
+
+    catKeys.forEach(key => {
+      const dishName = key.split('::')[1] || key;
+      const people = orders[key];
+      const alreadyIn = people.some(o => o.name === currentName);
+
+      const item = document.createElement('div');
+      item.className = 'order-summary-item';
+
+      // Who tags
+      const whoDiv = document.createElement('div');
+      whoDiv.className = 'osi-who';
+      people.forEach(o => {
+        const label = o.qty > 1 ? `${o.name} ×${o.qty}` : o.name;
+        const gfBadge = o.gf ? '<span class="diet-badge gf">GF</span>' : '';
+        const vegBadge = o.veg ? '<span class="diet-badge veg">Veg</span>' : '';
+        const tag = document.createElement('span');
+        tag.className = 'osi-tag';
+        tag.innerHTML = `${esc(label)}${gfBadge}${vegBadge}`;
+        whoDiv.appendChild(tag);
+      });
+
+      // Action button
+      const actionBtn = document.createElement('button');
+      if (alreadyIn) {
+        actionBtn.className = 'osi-remove-me';
+        actionBtn.textContent = '✕ Remove me from this';
+        actionBtn.onclick = () => removePersonOrder(key, currentName);
+      } else {
+        actionBtn.className = 'osi-me-too';
+        actionBtn.textContent = '👋 I want this too!';
+        actionBtn.onclick = () => addOrder(key);
+      }
+
+      const dishDiv = document.createElement('div');
+      dishDiv.className = 'osi-dish';
+      dishDiv.textContent = dishName;
+
+      item.appendChild(dishDiv);
+      item.appendChild(whoDiv);
+      item.appendChild(actionBtn);
+      container.appendChild(item);
+    });
+  });
+}
+
 async function removePersonOrder(key, personName) {
   if (!confirm(`Remove ${personName} from this dish?`)) return;
   try {
@@ -1769,17 +1868,26 @@ function renderOrders(orders) {
       const dishOrders = orders[key] || [];
       el.innerHTML = '';
 
-      // Just show a subtle count badge on the card, no tags
+      // Show count badge; if user is on it, make it tappable to remove
       if (dishOrders.length > 0) {
         const count = dishOrders.reduce((sum, o) => sum + (o.qty || 1), 0);
         const alreadyIn = dishOrders.some(o => o.name === currentName);
-        const badge = document.createElement('span');
-        badge.className = 'order-count-badge';
-        badge.textContent = alreadyIn
-          ? `✓ You + ${count - 1} other${count - 1 !== 1 ? 's' : ''}`
-          : `${count} ordered`;
-        if (alreadyIn) badge.classList.add('you-in');
-        el.appendChild(badge);
+        if (alreadyIn) {
+          const badge = document.createElement('button');
+          badge.className = 'order-count-badge you-in removable';
+          const others = count - 1;
+          badge.textContent = others > 0
+            ? `✓ You + ${others} other${others !== 1 ? 's' : ''} — tap to remove`
+            : `✓ You — tap to remove`;
+          badge.title = 'Remove yourself from this dish';
+          badge.onclick = () => removePersonOrder(key, currentName);
+          el.appendChild(badge);
+        } else {
+          const badge = document.createElement('span');
+          badge.className = 'order-count-badge';
+          badge.textContent = `${count} ordered`;
+          el.appendChild(badge);
+        }
       }
 
       if (card) {
@@ -1799,53 +1907,7 @@ function renderOrders(orders) {
   }
 
   listEl.innerHTML = '';
-
-  // Group keys by category
-  const byCat = {};
-  keys.forEach(key => {
-    const cat = key.split('::')[0];
-    if (!byCat[cat]) byCat[cat] = [];
-    byCat[cat].push(key);
-  });
-
-  // Render in menu order
-  MENU.forEach(cat => {
-    const catKeys = byCat[cat.cat];
-    if (!catKeys || catKeys.length === 0) return;
-
-    // Category header
-    const catHeader = document.createElement('div');
-    catHeader.className = 'osi-cat-header';
-    catHeader.textContent = cat.cat;
-    listEl.appendChild(catHeader);
-
-    catKeys.forEach(key => {
-      const dishName = key.split('::')[1] || key;
-      const people = orders[key];
-
-      const item = document.createElement('div');
-      item.className = 'order-summary-item';
-
-      const whoHtml = people.map(o => {
-        const label = o.qty > 1 ? `${o.name} ×${o.qty}` : o.name;
-        const gfBadge = o.gf ? '<span class="diet-badge gf">GF</span>' : '';
-        const vegBadge = o.veg ? '<span class="diet-badge veg">Veg</span>' : '';
-        return `<span class="osi-tag">${esc(label)}${gfBadge}${vegBadge}</span>`;
-      }).join('');
-
-      const alreadyIn = people.some(o => o.name === currentName);
-      const meTooBtn = (!alreadyIn && currentName)
-        ? `<button class="osi-me-too" onclick="addOrder('${esc(key)}')">👋 I want this too!</button>`
-        : `<div style="font-size:11px;color:#2d6a4f;font-weight:600;padding:2px 0;">✓ You're on this one</div>`;
-
-      item.innerHTML = `
-        <div class="osi-dish">${esc(dishName)}</div>
-        <div class="osi-who">${whoHtml}</div>
-        ${meTooBtn}
-      `;
-      listEl.appendChild(item);
-    });
-  });
+  renderOrderList(listEl, orders, keys);
 
   const totalDishes = keys.length;
   const totalOrders = Object.values(orders).reduce((sum, arr) => sum + (arr ? arr.length : 0), 0);
@@ -1886,10 +1948,15 @@ function esc(str) {
 function openDrawer() {
   document.getElementById('drawer-backdrop').classList.add('open');
   document.getElementById('drawer-panel').classList.add('open');
-  // Sync drawer with current sidebar content
-  const src = document.getElementById('order-list').innerHTML;
-  document.getElementById('drawer-order-list').innerHTML = src;
-  // Scroll drawer to top
+  // Render drawer from live data (not innerHTML clone -- that breaks onclick)
+  const drawerList = document.getElementById('drawer-order-list');
+  drawerList.innerHTML = '';
+  const keys = Object.keys(ordersCache).filter(k => ordersCache[k] && ordersCache[k].length > 0);
+  if (keys.length === 0) {
+    drawerList.innerHTML = '<div class="empty-state"><span class="icon">🥢</span>No dishes yet — start picking!</div>';
+  } else {
+    renderOrderList(drawerList, ordersCache, keys);
+  }
   document.getElementById('drawer-panel').scrollTop = 0;
 }
 
