@@ -1,0 +1,1040 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Roxton Family Dinner · New Sky</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700&family=Noto+Sans+SC:wght@300;400;500&family=Cinzel:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --red: #9b1c1c;
+  --red-dark: #6b0f0f;
+  --red-light: #c0392b;
+  --gold: #c9962a;
+  --gold-light: #e8b84b;
+  --gold-pale: #f5e6c0;
+  --paper: #fdf6e8;
+  --paper-dark: #f0e4c4;
+  --ink: #1a0a0a;
+  --ink-mid: #4a2020;
+  --ink-light: #7a4a3a;
+  --white: #fffdf7;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--paper);
+  font-family: 'Noto Sans SC', sans-serif;
+  color: var(--ink);
+  min-height: 100vh;
+  background-image:
+    radial-gradient(ellipse at 0% 0%, rgba(155,28,28,0.06) 0%, transparent 60%),
+    radial-gradient(ellipse at 100% 100%, rgba(201,150,42,0.07) 0%, transparent 60%);
+}
+
+/* TOP BORDER */
+.top-border {
+  height: 6px;
+  background: linear-gradient(90deg, var(--red-dark), var(--red), var(--gold), var(--gold-light), var(--gold), var(--red), var(--red-dark));
+}
+
+/* HEADER */
+header {
+  text-align: center;
+  padding: 40px 24px 28px;
+  position: relative;
+  border-bottom: 1px solid rgba(201,150,42,0.3);
+  background: linear-gradient(180deg, rgba(155,28,28,0.04) 0%, transparent 100%);
+}
+
+.lantern-row {
+  display: flex;
+  justify-content: center;
+  gap: 32px;
+  margin-bottom: 20px;
+}
+
+.lantern {
+  font-size: 28px;
+  animation: sway 3s ease-in-out infinite;
+}
+
+.lantern:nth-child(2) { animation-delay: 0.5s; }
+.lantern:nth-child(3) { animation-delay: 1s; }
+
+@keyframes sway {
+  0%, 100% { transform: rotate(-4deg); }
+  50% { transform: rotate(4deg); }
+}
+
+h1 {
+  font-family: 'Cinzel', serif;
+  font-size: clamp(1.8rem, 5vw, 3rem);
+  color: var(--red-dark);
+  letter-spacing: 3px;
+  line-height: 1.2;
+}
+
+h1 .sub {
+  display: block;
+  font-family: 'Noto Sans SC', sans-serif;
+  font-size: 0.38em;
+  font-weight: 300;
+  letter-spacing: 4px;
+  color: var(--gold);
+  text-transform: uppercase;
+  margin-top: 6px;
+}
+
+.header-divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin: 16px auto 0;
+  max-width: 400px;
+}
+
+.header-divider::before,
+.header-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold));
+}
+
+.header-divider::after {
+  background: linear-gradient(90deg, var(--gold), transparent);
+}
+
+.header-divider span {
+  color: var(--gold);
+  font-size: 14px;
+}
+
+/* NAME BAR */
+.name-bar {
+  background: var(--white);
+  border-bottom: 1px solid rgba(201,150,42,0.25);
+  padding: 14px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 2px 12px rgba(155,28,28,0.08);
+}
+
+.name-bar label {
+  font-size: 12px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--ink-mid);
+  white-space: nowrap;
+}
+
+.name-bar input {
+  padding: 8px 14px;
+  border: 1.5px solid rgba(201,150,42,0.4);
+  border-radius: 6px;
+  font-family: 'Noto Sans SC', sans-serif;
+  font-size: 14px;
+  background: var(--paper);
+  color: var(--ink);
+  width: 200px;
+  transition: all 0.2s;
+}
+
+.name-bar input:focus {
+  outline: none;
+  border-color: var(--gold);
+  background: var(--white);
+  box-shadow: 0 0 0 3px rgba(201,150,42,0.12);
+}
+
+.name-bar input::placeholder { color: #bbb; }
+
+.name-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--red-dark);
+  color: var(--gold-light);
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.name-pill:hover { background: var(--red); }
+
+.name-pill .x { font-size: 11px; opacity: 0.7; }
+
+/* MAIN LAYOUT */
+.main {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 32px 20px 60px;
+  display: grid;
+  grid-template-columns: 1fr 360px;
+  gap: 28px;
+  align-items: start;
+}
+
+@media (max-width: 800px) {
+  .main { grid-template-columns: 1fr; }
+  .order-sidebar { order: -1; }
+}
+
+/* CATEGORY TABS */
+.category-tabs {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+
+.tab-btn {
+  padding: 6px 14px;
+  border-radius: 20px;
+  border: 1.5px solid rgba(201,150,42,0.35);
+  background: var(--white);
+  color: var(--ink-mid);
+  font-family: 'Noto Sans SC', sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  letter-spacing: 0.5px;
+}
+
+.tab-btn:hover {
+  border-color: var(--gold);
+  color: var(--gold);
+}
+
+.tab-btn.active {
+  background: var(--red-dark);
+  border-color: var(--red-dark);
+  color: var(--gold-light);
+}
+
+/* MENU SECTION */
+.menu-section { display: none; }
+.menu-section.visible { display: block; }
+
+.section-heading {
+  font-family: 'Cinzel', serif;
+  font-size: 1rem;
+  color: var(--red-dark);
+  letter-spacing: 2px;
+  margin-bottom: 12px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgba(201,150,42,0.3);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.section-heading::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, rgba(201,150,42,0.4), transparent);
+}
+
+/* DISH CARDS */
+.dish-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 10px;
+  margin-bottom: 32px;
+}
+
+.dish-card {
+  background: var(--white);
+  border: 1.5px solid rgba(201,150,42,0.2);
+  border-radius: 10px;
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  transition: all 0.2s;
+  cursor: pointer;
+  position: relative;
+}
+
+.dish-card:hover {
+  border-color: rgba(201,150,42,0.5);
+  box-shadow: 0 3px 12px rgba(155,28,28,0.1);
+  transform: translateY(-1px);
+}
+
+.dish-card.has-orders {
+  border-color: var(--gold);
+  background: linear-gradient(135deg, var(--white), var(--gold-pale));
+}
+
+.dish-name {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--ink);
+  line-height: 1.35;
+}
+
+.dish-chinese {
+  font-size: 11px;
+  color: var(--ink-light);
+  font-family: 'Noto Serif SC', serif;
+}
+
+.dish-price {
+  font-size: 12px;
+  color: var(--gold);
+  font-weight: 500;
+}
+
+.dish-orders {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: 2px;
+}
+
+.order-tag {
+  background: var(--red-dark);
+  color: var(--gold-light);
+  font-size: 11px;
+  padding: 2px 8px;
+  border-radius: 10px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.order-tag .remove-tag {
+  cursor: pointer;
+  opacity: 0.7;
+  font-size: 10px;
+  background: none;
+  border: none;
+  color: inherit;
+  padding: 0;
+  line-height: 1;
+}
+
+.order-tag .remove-tag:hover { opacity: 1; }
+
+.add-order-btn {
+  align-self: flex-start;
+  margin-top: 4px;
+  padding: 5px 12px;
+  background: none;
+  border: 1.5px solid rgba(201,150,42,0.4);
+  border-radius: 6px;
+  color: var(--gold);
+  font-family: 'Noto Sans SC', sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.add-order-btn:hover {
+  background: var(--red-dark);
+  border-color: var(--red-dark);
+  color: var(--gold-light);
+}
+
+/* SIDEBAR */
+.order-sidebar {
+  position: sticky;
+  top: 70px;
+}
+
+.sidebar-card {
+  background: var(--white);
+  border: 1.5px solid rgba(201,150,42,0.3);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(155,28,28,0.08);
+}
+
+.sidebar-header {
+  background: var(--red-dark);
+  padding: 18px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.sidebar-header h2 {
+  font-family: 'Cinzel', serif;
+  font-size: 0.95rem;
+  color: var(--gold-light);
+  letter-spacing: 2px;
+}
+
+.refresh-btn {
+  background: none;
+  border: 1px solid rgba(232,184,75,0.4);
+  color: var(--gold-light);
+  padding: 4px 10px;
+  border-radius: 4px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.refresh-btn:hover { background: rgba(232,184,75,0.15); border-color: var(--gold-light); }
+
+.sidebar-body { padding: 16px; }
+
+.order-summary-item {
+  padding: 10px 0;
+  border-bottom: 1px dashed rgba(201,150,42,0.25);
+  animation: fadeIn 0.3s ease;
+}
+
+.order-summary-item:last-child { border-bottom: none; }
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateX(-6px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+.osi-dish {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--ink);
+  line-height: 1.35;
+  margin-bottom: 4px;
+}
+
+.osi-who {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.osi-tag {
+  font-size: 11px;
+  background: var(--gold-pale);
+  color: var(--ink-mid);
+  padding: 2px 7px;
+  border-radius: 8px;
+  border: 1px solid rgba(201,150,42,0.3);
+}
+
+.empty-state {
+  text-align: center;
+  padding: 32px 16px;
+  color: #bbb;
+  font-size: 13px;
+  font-style: italic;
+}
+
+.empty-state .icon { font-size: 28px; margin-bottom: 8px; display: block; }
+
+.sidebar-footer {
+  padding: 12px 16px;
+  border-top: 1px solid rgba(201,150,42,0.2);
+  background: var(--paper);
+  font-size: 11px;
+  color: #bbb;
+  text-align: center;
+}
+
+/* HOST PANEL */
+.host-section {
+  max-width: 1100px;
+  margin: 0 auto 40px;
+  padding: 0 20px;
+}
+
+details {
+  background: var(--white);
+  border: 1px solid rgba(201,150,42,0.25);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+summary {
+  padding: 10px 18px;
+  font-size: 12px;
+  color: var(--ink-light);
+  cursor: pointer;
+  letter-spacing: 1px;
+  user-select: none;
+}
+
+.host-controls {
+  padding: 14px 18px;
+  border-top: 1px solid rgba(201,150,42,0.2);
+  display: flex;
+  gap: 10px;
+}
+
+.danger-btn {
+  padding: 7px 16px;
+  background: #fdecea;
+  color: var(--red);
+  border: 1px solid #ef9a9a;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.danger-btn:hover { background: var(--red); color: white; }
+
+/* TOAST */
+.toast {
+  position: fixed;
+  bottom: 28px;
+  left: 50%;
+  transform: translateX(-50%) translateY(20px);
+  background: var(--red-dark);
+  color: var(--gold-light);
+  padding: 10px 22px;
+  border-radius: 24px;
+  font-size: 13px;
+  font-weight: 500;
+  opacity: 0;
+  transition: all 0.3s;
+  pointer-events: none;
+  z-index: 999;
+  white-space: nowrap;
+}
+
+.toast.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* LOADING */
+.loading-overlay {
+  text-align: center;
+  padding: 20px;
+  color: var(--gold);
+  font-size: 13px;
+}
+
+footer {
+  text-align: center;
+  padding: 20px;
+  font-size: 11px;
+  color: #ccc;
+  border-top: 1px solid rgba(201,150,42,0.15);
+}
+</style>
+</head>
+<body>
+
+<div class="top-border"></div>
+
+<header>
+  <div class="lantern-row">
+    <span class="lantern">🏮</span>
+    <span class="lantern">🏮</span>
+    <span class="lantern">🏮</span>
+  </div>
+  <h1>Roxton Family Dinner
+    <span class="sub">New Sky · Sunday May 24 · 353 Spadina Ave</span>
+  </h1>
+  <div class="header-divider"><span>❧</span></div>
+</header>
+
+<!-- NAME BAR -->
+<div class="name-bar" id="name-bar">
+  <label for="name-input">Your name:</label>
+  <input type="text" id="name-input" placeholder="e.g. Aidan" maxlength="30">
+  <button onclick="setName()" style="padding:8px 16px;background:var(--red-dark);color:var(--gold-light);border:none;border-radius:6px;font-family:'Noto Sans SC',sans-serif;font-size:13px;font-weight:500;cursor:pointer;transition:all 0.2s;" onmouseover="this.style.background='var(--red)'" onmouseout="this.style.background='var(--red-dark)'">Set Name</button>
+  <span class="name-pill" id="name-display" style="display:none" onclick="clearName()">
+    <span id="name-text"></span>
+    <span class="x">✕ change</span>
+  </span>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+  <div class="menu-col" id="menu-col">
+
+    <!-- CATEGORY TABS -->
+    <div class="category-tabs" id="cat-tabs"></div>
+
+    <!-- MENU SECTIONS -->
+    <div id="menu-sections"></div>
+
+  </div>
+
+  <!-- SIDEBAR -->
+  <div class="order-sidebar">
+    <div class="sidebar-card">
+      <div class="sidebar-header">
+        <h2>The Order So Far</h2>
+        <button class="refresh-btn" onclick="loadOrders()">↻ Refresh</button>
+      </div>
+      <div class="sidebar-body" id="order-list">
+        <div class="loading-overlay">Loading...</div>
+      </div>
+      <div class="sidebar-footer" id="sidebar-footer">Auto-refreshes every 30s</div>
+    </div>
+  </div>
+</div>
+
+<div class="host-section">
+  <details>
+    <summary>🔑 Host Options</summary>
+    <div class="host-controls">
+      <button class="danger-btn" onclick="clearAll()">🗑️ Clear Entire Order</button>
+    </div>
+  </details>
+</div>
+
+<footer>New Sky Restaurant · 353 Spadina Ave, Toronto · 416-596-8787 · Updates shared live across all devices</footer>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ── MENU DATA ────────────────────────────────────────────────────────────────
+const MENU = [
+  { cat: "Appetizers", items: [
+    { name: "Seaweed Salad", cn: "海草沙律", price: "$7" },
+    { name: "Spring Roll (each)", cn: "春卷", price: "$2.75" },
+    { name: "Deep Fried Shrimp Roll (3pcs)", cn: "炸虾卷", price: "$6" },
+    { name: "Hunan Dumplings w/ Chili Oil (6pcs)", cn: "红油抄手", price: "$8" },
+    { name: "Deep Fried Shrimp Ball (5pcs)", cn: "酥炸鲜虾花", price: "$15" },
+    { name: "Steamed Pork Dumpling (10pcs)", cn: "猪肉饺子", price: "$12" },
+    { name: "Steamed Chicken Dumpling (10pcs)", cn: "鸡肉饺子", price: "$12" },
+    { name: "Steamed Veggies Dumpling (10pcs)", cn: "什锦饺子", price: "$12" },
+    { name: "Pan Fried Pork Dumpling (10pcs)", cn: "煎猪肉饺子", price: "$14" },
+    { name: "Pan Fried Chicken Dumpling (10pcs)", cn: "煎鸡肉饺子", price: "$14" },
+    { name: "Pan Fried Veggies Dumpling (10pcs)", cn: "煎什锦锅贴", price: "$14" },
+    { name: "Deep Fried Chicken Wings (10pcs)", cn: "酥炸鸡翅", price: "$14" },
+    { name: "Salt & Pepper Chicken Wings", cn: "椒盐鸡翅", price: "$17" },
+    { name: "Stuffed Crab Claw (each)", cn: "蟹钳", price: "$9" },
+    { name: "Crispy Coconut Shrimps (6pcs)", cn: "椰蓉虾", price: "$9" },
+    { name: "Takoyaki Octopus Ball (6pcs)", cn: "章鱼小丸子", price: "$8" },
+  ]},
+  { cat: "Soups", items: [
+    { name: "Wonton Soup (XS)", cn: "云吞汤", price: "$7" },
+    { name: "Wonton Soup (S)", cn: "云吞汤", price: "$12.50" },
+    { name: "Wonton Soup (M)", cn: "云吞汤", price: "$17" },
+    { name: "Hot and Sour Soup (XS)", cn: "酸辣汤", price: "$6.50" },
+    { name: "Hot and Sour Soup (S)", cn: "酸辣汤", price: "$11" },
+    { name: "Hot and Sour Soup (M)", cn: "酸辣汤", price: "$15" },
+    { name: "Chicken & Sweet Corn Soup (XS)", cn: "鸡茸粟米羹", price: "$6.50" },
+    { name: "Chicken & Sweet Corn Soup (S)", cn: "鸡茸粟米羹", price: "$11" },
+    { name: "Chicken & Sweet Corn Soup (M)", cn: "鸡茸粟米羹", price: "$15" },
+    { name: "Crab Meat and Fish Maw Soup (XS)", cn: "蟹肉鱼肚羹", price: "$9" },
+    { name: "Crab Meat and Fish Maw Soup (S)", cn: "蟹肉鱼肚羹", price: "$16" },
+    { name: "Crab Meat and Fish Maw Soup (M)", cn: "蟹肉鱼肚羹", price: "$20" },
+    { name: "Seafood Bean Curd Soup (S)", cn: "海鲜豆腐羹", price: "$12" },
+    { name: "Minced Beef and Egg Drop Soup (XS)", cn: "西湖牛肉羹", price: "$7.99" },
+    { name: "Chinese Green, Pork & Salted Egg Soup (S)", cn: "菜心肉片咸蛋汤", price: "$14" },
+    { name: "Chinese Green, Pork & Salted Egg Soup (M)", cn: "菜心肉片咸蛋汤", price: "$18" },
+  ]},
+  { cat: "Seafood", items: [
+    { name: "Two Fresh Lobster w/ Ginger & Green Onion", cn: "姜葱双龙虾", price: "$65" },
+    { name: "Two Fresh Lobster w/ Black Bean Sauce", cn: "豉汁双龙虾", price: "$65" },
+    { name: "Two Fresh Lobster w/ Salt & Pepper", cn: "椒盐双龙虾", price: "$65" },
+    { name: "Two Fresh Lobster w/ HK Style", cn: "避风塘双龙虾", price: "$71" },
+    { name: "Steamed Live Tilapia Fish", cn: "清蒸立鱼", price: "$35.99" },
+    { name: "Deep Fried Jumbo Shrimps w/ Salt & Pepper", cn: "椒盐大虾球", price: "$25" },
+    { name: "Deep Fried Soft Shell Crab w/ Salt & Pepper", cn: "椒盐软壳蟹", price: "$24" },
+    { name: "Deep Fried Squid w/ Salt & Pepper", cn: "椒盐鲜鱿", price: "$20" },
+    { name: "Sauteed Scallops w/ Snow Peas", cn: "油爆鲜带子", price: "$28" },
+    { name: "Sauteed Scallops & Shrimp w/ Snow Peas", cn: "雪豆带子虾仁", price: "$26" },
+    { name: "Sauteed Jumbo Shrimp w/ Veggies", cn: "油泡大虾球", price: "$29" },
+    { name: "Mixed Seafood with XO Sauce", cn: "XO爆三鲜", price: "$24" },
+    { name: "Mixed Seafood & Broccoli", cn: "西兰花三鲜", price: "$20" },
+    { name: "Szechuan Shrimp", cn: "四川虾仁", price: "$20" },
+    { name: "Sauteed Shrimp w/ Cashews", cn: "腰果虾仁", price: "$20" },
+    { name: "Clams w/ Black Bean Sauce", cn: "豉汁炒蚬", price: "$18" },
+  ]},
+  { cat: "Chicken & Duck", items: [
+    { name: "General Tao's Chicken", cn: "左宗棠鸡", price: "$19" },
+    { name: "Chicken with Lemon Sauce", cn: "西柠鸡", price: "$19" },
+    { name: "Szechuan Style Chicken w/ Fried Greens", cn: "川椒鸡", price: "$19" },
+    { name: "Spicy Chili Chicken", cn: "铁板辣子鸡", price: "$20" },
+    { name: "Sauteed Chicken & Snow Peas", cn: "雪豆鸡片", price: "$19" },
+    { name: "Kung Pao Chicken", cn: "宫保鸡丁", price: "$19" },
+    { name: "Sauteed Diced Chicken w/ Cashews", cn: "腰果鸡丁", price: "$19" },
+    { name: "Sweet & Sour Chicken w/ Pineapple", cn: "咕噜鸡", price: "$19" },
+    { name: "Crispy Chicken with Orange Zest", cn: "陈皮鸡", price: "$19" },
+    { name: "Deep Fried Crispy Chicken (Half)", cn: "炸子鸡半只", price: "$18" },
+    { name: "Pan Fried Free Range Chicken", cn: "生炒走地鸡", price: "$22" },
+    { name: "Curry Chicken", cn: "咖喱鸡片", price: "$19" },
+    { name: "Steamed Cold Chicken", cn: "特制贵妃鸡", price: "$19" },
+    { name: "Crispy Duck with Special Sauce", cn: "脆鸭", price: "$34.99" },
+    { name: "B.B.Q Duck (Half)", cn: "烧鸭", price: "$29" },
+    { name: "Deep Fried Duck Stuffed w/ Mashed Taro", cn: "荔芋香酥鸭", price: "$26" },
+    { name: "Peking Duck w/ 12 Pancakes", cn: "北京鸭", price: "$79" },
+  ]},
+  { cat: "Pork", items: [
+    { name: "Fried Pork Chop with Chef's Special Sauce", cn: "京都肉排", price: "$17" },
+    { name: "Deep Fried Pork Chop with Salt and Pepper", cn: "椒盐肉排", price: "$17" },
+    { name: "Sweet and Sour Pork with Pineapple", cn: "菠萝咕噜肉", price: "$17" },
+    { name: "Honey Garlic Spareribs", cn: "蜜糖骨", price: "$19" },
+    { name: "B.B.Q Pork", cn: "蜜汁叉烧", price: "$17" },
+    { name: "Braised Pork Belly w/ Preserved Veggie", cn: "梅菜扣肉", price: "$18" },
+    { name: "Steamed Spareribs w/ Black Bean Sauce", cn: "豉汁蒸排骨", price: "$17" },
+    { name: "Steamed Ground Pork w/ Salted Fish", cn: "咸鱼蒸肉饼", price: "$20" },
+    { name: "Stir Fried Pork Cheek w/ King Mushroom", cn: "皇子菇炒猪爽肉", price: "$22" },
+  ]},
+  { cat: "Beef", items: [
+    { name: "Beef Ribs with Black Pepper Sauce", cn: "黑椒牛仔骨", price: "$24" },
+    { name: "Honey Pepper Beef Ribs", cn: "蜜椒牛仔骨", price: "$24" },
+    { name: "Sliced Beef with Broccoli", cn: "西兰花牛肉", price: "$20" },
+    { name: "Sliced Beef w/ Oyster Sauce", cn: "蚝油牛肉", price: "$20" },
+    { name: "Sliced Beef w/ Black Pepper Sauce", cn: "黑椒牛肉", price: "$20" },
+    { name: "Sliced Beef w/ Snow Peas", cn: "雪豆牛肉", price: "$20" },
+    { name: "Crispy Beef with Ginger", cn: "脆姜牛肉", price: "$20" },
+    { name: "Crispy Beef with Orange Zest", cn: "陈皮牛", price: "$20" },
+    { name: "Crispy Beef with Sesame", cn: "芝麻牛", price: "$20" },
+    { name: "Slow Simmered Beef in Spicy Broth", cn: "水煮牛肉", price: "$20" },
+    { name: "Szechuan Beef", cn: "四川牛肉", price: "$20" },
+    { name: "Beef & Bell Peppers in Black Bean Sauce", cn: "豉椒牛肉", price: "$20" },
+  ]},
+  { cat: "Sizzling & Hot Pot", items: [
+    { name: "Mixed Seafood with Bean Curd in Hot Pot", cn: "海鲜豆腐煲", price: "$23" },
+    { name: "Beef Brisket in Hot Pot", cn: "柱侯牛腩煲", price: "$22" },
+    { name: "Chicken w/ Ginger & Green Onion Hot Pot", cn: "姜葱鸡片煲", price: "$22" },
+    { name: "Eggplant w/ Minced Pork Hot Pot", cn: "鱼香茄子煲", price: "$17" },
+    { name: "Tofu w/ Mixed Meats Hot Pot", cn: "八珍豆腐煲", price: "$20" },
+    { name: "Sizzling Beef Tenderloin w/ Black Pepper", cn: "铁板黑椒牛柳", price: "$25" },
+    { name: "Sizzling Beef Tenderloin w/ Chef's Sauce", cn: "铁板中式牛柳", price: "$25" },
+    { name: "Sizzling Mixed Seafood & Veggie", cn: "铁板什菜海鲜", price: "$23" },
+    { name: "Bean Curd with Lo Hon Veggies Hot Pot", cn: "罗汉斋豆腐煲", price: "$17" },
+  ]},
+  { cat: "Vegetables", items: [
+    { name: "Snowpea Leaves w/ Garlic Sauce", cn: "蒜蓉豆苗", price: "$19" },
+    { name: "Chinese Greens w/ Oyster Sauce", cn: "蚝油菜心", price: "$15" },
+    { name: "Chinese Broccoli with Garlic Sauce", cn: "蒜蓉芥兰", price: "$15" },
+    { name: "Stir Fried Mixed Veggie", cn: "炒什菜", price: "$15" },
+    { name: "Stir Fried Mixed Veggie & Tofu", cn: "豆腐炒什菜", price: "$16" },
+    { name: "Braised Tofu w/ Mushroom & Broccoli", cn: "冬菇西兰花豆腐", price: "$16" },
+    { name: "Baby Bok Choy w/ Garlic", cn: "蒜蓉小白菜", price: "$16" },
+    { name: "Stir Fried String Beans w/ XO Sauce", cn: "XO酱四季豆", price: "$17" },
+    { name: "Shrimp Egg Foo Young", cn: "虾仁芙蓉蛋", price: "$17" },
+    { name: "Chicken Egg Foo Young", cn: "鸡片芙蓉蛋", price: "$17" },
+    { name: "Fried Tofu w/ Conpoy & Enoki Mushroom", cn: "瑶柱金针菇豆腐", price: "$18" },
+  ]},
+  { cat: "Fried Rice", items: [
+    { name: "Young Chow Fried Rice", cn: "扬州炒饭", price: "$16" },
+    { name: "Shrimp Fried Rice", cn: "虾仁炒饭", price: "$16" },
+    { name: "Chicken Fried Rice", cn: "鸡炒饭", price: "$15" },
+    { name: "B.B.Q Pork Fried Rice", cn: "叉烧炒饭", price: "$15" },
+    { name: "House Fried Rice", cn: "沙田炒饭", price: "$18" },
+    { name: "Seafood Fried Rice", cn: "海鲜炒饭", price: "$18" },
+    { name: "Salted Fish & Chicken Fried Rice", cn: "咸鱼鸡粒炒饭", price: "$18" },
+    { name: "Mushroom Fried Rice", cn: "蘑菇炒饭", price: "$14" },
+    { name: "Steamed Rice (bowl)", cn: "白饭", price: "$2.75" },
+  ]},
+  { cat: "Noodles & Chow Mein", items: [
+    { name: "Mixed Seafood Chow Mein", cn: "海鲜炒面", price: "$20" },
+    { name: "Cantonese Chow Mein", cn: "广东炒面", price: "$18" },
+    { name: "Sliced Chicken Chow Mein", cn: "鸡片炒面", price: "$17" },
+    { name: "Sliced Beef Chow Mein", cn: "牛肉炒面", price: "$17" },
+    { name: "Shrimp Chow Mein", cn: "虾仁炒面", price: "$18" },
+    { name: "Mixed Veggie Chow Mein", cn: "什菜炒面", price: "$15" },
+    { name: "Fried Noodle Shanghai Style w/ Pork & Shrimp", cn: "上海粗炒", price: "$16" },
+    { name: "Singapore Vermicelli w/ Pork & Shrimp", cn: "星洲炒米", price: "$16" },
+    { name: "House Special Vermicelli", cn: "家乡炒米", price: "$16" },
+    { name: "Rice Noodle with Beef in Soya Sauce", cn: "干炒牛河", price: "$17" },
+    { name: "Rice Noodle with Beef in Black Bean Sauce", cn: "豉椒牛肉炒河粉", price: "$17" },
+    { name: "Rice Noodle with Beef in Satay Sauce", cn: "沙爹牛肉炒河粉", price: "$17" },
+    { name: "Wonton Noodle Soup", cn: "云吞汤面", price: "$13" },
+    { name: "Shrimp Dumpling Noodle Soup", cn: "水饺汤面", price: "$14" },
+  ]},
+  { cat: "Congee", items: [
+    { name: "Seafood Congee (S)", cn: "海鲜粥小", price: "$11" },
+    { name: "Seafood Congee (L)", cn: "海鲜粥窝", price: "$19" },
+    { name: "Pork and Preserve Egg Congee (S)", cn: "皮蛋瘦肉粥小", price: "$11" },
+    { name: "Pork and Preserve Egg Congee (L)", cn: "皮蛋瘦肉粥窝", price: "$17" },
+    { name: "Beef Congee (S)", cn: "牛肉粥小", price: "$11" },
+    { name: "Beef Congee (L)", cn: "牛肉粥大", price: "$17" },
+    { name: "Sliced Chicken Congee (S)", cn: "鸡片粥小", price: "$11" },
+    { name: "Sliced Chicken Congee (L)", cn: "鸡片粥窝", price: "$17" },
+    { name: "Fish Congee (S)", cn: "鱼片粥", price: "$11" },
+    { name: "Fish Congee (L)", cn: "鱼片粥大", price: "$19" },
+    { name: "Mustard Greens w/ Clam Congee", cn: "鲜蚬时菜粥", price: "$21" },
+    { name: "Deep Fried Chinese Donut", cn: "油条", price: "$4" },
+  ]},
+];
+
+// ── STORAGE ─────────────────────────────────────────────────────────────────
+const BIN_ID = '6a11e7e86877513b27bef100';
+const API_KEY = '$2a$10$JcicJeCt72663aRm7vStcuUkC1ue3Pdi1astd.IxkMd3AIHjbKokm';
+const BIN_URL = `https://api.jsonbin.io/v3/b/${BIN_ID}`;
+const HEADERS = {
+  'Content-Type': 'application/json',
+  'X-Master-Key': API_KEY,
+  'X-Bin-Versioning': 'false'
+};
+
+// orders: { dishKey: [ { name, qty } ] }
+async function getData() {
+  const res = await fetch(BIN_URL + '/latest', { headers: { 'X-Master-Key': API_KEY } });
+  if (!res.ok) throw new Error('fetch failed');
+  const json = await res.json();
+  return json.record.orders || {};
+}
+
+async function saveData(orders) {
+  const res = await fetch(BIN_URL, {
+    method: 'PUT',
+    headers: HEADERS,
+    body: JSON.stringify({ orders })
+  });
+  if (!res.ok) throw new Error('save failed');
+}
+
+// ── STATE ────────────────────────────────────────────────────────────────────
+let currentName = localStorage.getItem('newsky_name') || '';
+let ordersCache = {};
+
+function toast(msg) {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.classList.add('show');
+  setTimeout(() => el.classList.remove('show'), 2800);
+}
+
+// ── NAME ─────────────────────────────────────────────────────────────────────
+function setName() {
+  const val = document.getElementById('name-input').value.trim();
+  if (!val) { toast('Please enter your name first'); return; }
+  currentName = val;
+  localStorage.setItem('newsky_name', val);
+  updateNameBar();
+}
+
+function clearName() {
+  currentName = '';
+  localStorage.removeItem('newsky_name');
+  document.getElementById('name-input').value = '';
+  updateNameBar();
+}
+
+function updateNameBar() {
+  const pill = document.getElementById('name-display');
+  const input = document.getElementById('name-input');
+  if (currentName) {
+    document.getElementById('name-text').textContent = currentName;
+    pill.style.display = 'inline-flex';
+    input.style.display = 'none';
+    document.querySelector('[onclick="setName()"]').style.display = 'none';
+  } else {
+    pill.style.display = 'none';
+    input.style.display = '';
+    document.querySelector('[onclick="setName()"]').style.display = '';
+  }
+}
+
+// ── MENU RENDERING ────────────────────────────────────────────────────────────
+function dishKey(catName, dishName) {
+  return catName + '::' + dishName;
+}
+
+function buildMenu() {
+  const tabsEl = document.getElementById('cat-tabs');
+  const sectionsEl = document.getElementById('menu-sections');
+  tabsEl.innerHTML = '';
+  sectionsEl.innerHTML = '';
+
+  MENU.forEach((cat, ci) => {
+    // Tab
+    const tab = document.createElement('button');
+    tab.className = 'tab-btn' + (ci === 0 ? ' active' : '');
+    tab.textContent = cat.cat;
+    tab.onclick = () => switchTab(ci);
+    tabsEl.appendChild(tab);
+
+    // Section
+    const sec = document.createElement('div');
+    sec.className = 'menu-section' + (ci === 0 ? ' visible' : '');
+    sec.id = 'sec-' + ci;
+
+    const heading = document.createElement('div');
+    heading.className = 'section-heading';
+    heading.textContent = cat.cat;
+    sec.appendChild(heading);
+
+    const grid = document.createElement('div');
+    grid.className = 'dish-grid';
+
+    cat.items.forEach(dish => {
+      const key = dishKey(cat.cat, dish.name);
+      const card = document.createElement('div');
+      card.className = 'dish-card';
+      card.id = 'card-' + CSS.escape(key);
+      card.innerHTML = `
+        <div class="dish-name">${dish.name}</div>
+        ${dish.cn ? `<div class="dish-chinese">${dish.cn}</div>` : ''}
+        <div class="dish-price">${dish.price}</div>
+        <div class="dish-orders" id="orders-${CSS.escape(key)}"></div>
+        <button class="add-order-btn" onclick="addOrder('${esc(key)}')">+ I want this</button>
+      `;
+      grid.appendChild(card);
+    });
+
+    sec.appendChild(grid);
+    sectionsEl.appendChild(sec);
+  });
+}
+
+function switchTab(ci) {
+  document.querySelectorAll('.tab-btn').forEach((b, i) => {
+    b.className = 'tab-btn' + (i === ci ? ' active' : '');
+  });
+  document.querySelectorAll('.menu-section').forEach((s, i) => {
+    s.className = 'menu-section' + (i === ci ? ' visible' : '');
+  });
+}
+
+// ── ORDER LOGIC ───────────────────────────────────────────────────────────────
+async function addOrder(key) {
+  if (!currentName) { toast('Set your name first (top of page)'); return; }
+  try {
+    const orders = await getData();
+    if (!orders[key]) orders[key] = [];
+    const existing = orders[key].find(o => o.name === currentName);
+    if (existing) {
+      existing.qty = (existing.qty || 1) + 1;
+    } else {
+      orders[key].push({ name: currentName, qty: 1 });
+    }
+    ordersCache = orders;
+    await saveData(orders);
+    renderOrders(orders);
+    toast('Added!');
+  } catch(e) {
+    toast('Error — please try again');
+    console.error(e);
+  }
+}
+
+async function removePersonOrder(key, personName) {
+  if (!confirm(`Remove ${personName} from this dish?`)) return;
+  try {
+    const orders = await getData();
+    if (orders[key]) {
+      orders[key] = orders[key].filter(o => o.name !== personName);
+      if (orders[key].length === 0) delete orders[key];
+    }
+    ordersCache = orders;
+    await saveData(orders);
+    renderOrders(orders);
+    toast('Removed');
+  } catch(e) {
+    toast('Error — please try again');
+  }
+}
+
+function renderOrders(orders) {
+  // Update dish cards
+  MENU.forEach(cat => {
+    cat.items.forEach(dish => {
+      const key = dishKey(cat.cat, dish.name);
+      const el = document.getElementById('orders-' + CSS.escape(key));
+      const card = document.getElementById('card-' + CSS.escape(key));
+      if (!el) return;
+
+      const dishOrders = orders[key] || [];
+      el.innerHTML = '';
+      dishOrders.forEach(o => {
+        const tag = document.createElement('span');
+        tag.className = 'order-tag';
+        const label = o.qty > 1 ? `${o.name} ×${o.qty}` : o.name;
+        tag.innerHTML = `${esc(label)} <button class="remove-tag" title="Remove" onclick="removePersonOrder('${esc(key)}','${esc(o.name)}')">✕</button>`;
+        el.appendChild(tag);
+      });
+
+      if (card) {
+        card.className = 'dish-card' + (dishOrders.length > 0 ? ' has-orders' : '');
+      }
+    });
+  });
+
+  // Update sidebar
+  const listEl = document.getElementById('order-list');
+  const keys = Object.keys(orders).filter(k => orders[k] && orders[k].length > 0);
+
+  if (keys.length === 0) {
+    listEl.innerHTML = '<div class="empty-state"><span class="icon">🥢</span>No dishes yet — start picking!</div>';
+    document.getElementById('sidebar-footer').textContent = 'No items yet · Auto-refreshes every 30s';
+    return;
+  }
+
+  listEl.innerHTML = '';
+  keys.forEach(key => {
+    const parts = key.split('::');
+    const dishName = parts[1] || key;
+    const people = orders[key];
+
+    const item = document.createElement('div');
+    item.className = 'order-summary-item';
+    const whoHtml = people.map(o => {
+      const label = o.qty > 1 ? `${o.name} ×${o.qty}` : o.name;
+      return `<span class="osi-tag">${esc(label)}</span>`;
+    }).join('');
+    item.innerHTML = `<div class="osi-dish">${esc(dishName)}</div><div class="osi-who">${whoHtml}</div>`;
+    listEl.appendChild(item);
+  });
+
+  const totalDishes = keys.length;
+  const totalOrders = Object.values(orders).reduce((sum, arr) => sum + (arr ? arr.length : 0), 0);
+  document.getElementById('sidebar-footer').textContent = `${totalDishes} dish${totalDishes !== 1 ? 'es' : ''} · ${totalOrders} order${totalOrders !== 1 ? 's' : ''} · Auto-refreshes every 30s`;
+}
+
+async function loadOrders() {
+  try {
+    const orders = await getData();
+    ordersCache = orders;
+    renderOrders(orders);
+  } catch(e) {
+    document.getElementById('order-list').innerHTML = '<div class="empty-state">⚠️ Could not load orders</div>';
+  }
+}
+
+async function clearAll() {
+  if (!confirm('Clear the ENTIRE order list? This cannot be undone.')) return;
+  try {
+    await saveData({});
+    ordersCache = {};
+    renderOrders({});
+    toast('Order list cleared');
+  } catch(e) {
+    toast('Error clearing list');
+  }
+}
+
+function esc(str) {
+  return String(str).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+// ── INIT ─────────────────────────────────────────────────────────────────────
+if (currentName) {
+  document.getElementById('name-input').value = currentName;
+}
+updateNameBar();
+buildMenu();
+loadOrders();
+setInterval(loadOrders, 30000);
+
+document.getElementById('name-input').addEventListener('keydown', e => {
+  if (e.key === 'Enter') setName();
+});
+</script>
+</body>
+</html>
