@@ -535,10 +535,194 @@ footer {
   color: #ccc;
   border-top: 1px solid rgba(201,150,42,0.15);
 }
+/* LANDING PAGE */
+#landing {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background: var(--paper);
+  background-image:
+    radial-gradient(ellipse at 20% 20%, rgba(155,28,28,0.08) 0%, transparent 60%),
+    radial-gradient(ellipse at 80% 80%, rgba(201,150,42,0.09) 0%, transparent 60%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 24px;
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+#landing.hidden {
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-16px);
+}
+.landing-border-top {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 6px;
+  background: linear-gradient(90deg, var(--red-dark), var(--red), var(--gold), var(--gold-light), var(--gold), var(--red), var(--red-dark));
+}
+.landing-lanterns {
+  display: flex;
+  gap: 28px;
+  margin-bottom: 28px;
+}
+.landing-lanterns span {
+  font-size: 40px;
+  animation: sway 3s ease-in-out infinite;
+}
+.landing-lanterns span:nth-child(2) { animation-delay: 0.5s; }
+.landing-lanterns span:nth-child(3) { animation-delay: 1s; }
+.landing-title {
+  font-family: 'Cinzel', serif;
+  font-size: clamp(1.8rem, 6vw, 3.2rem);
+  color: var(--red-dark);
+  letter-spacing: 3px;
+  text-align: center;
+  line-height: 1.2;
+  margin-bottom: 6px;
+}
+.landing-sub {
+  font-family: 'Noto Sans SC', sans-serif;
+  font-size: 13px;
+  font-weight: 300;
+  letter-spacing: 3px;
+  color: var(--gold);
+  text-transform: uppercase;
+  text-align: center;
+  margin-bottom: 40px;
+}
+.landing-divider {
+  width: 120px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  margin: 0 auto 40px;
+}
+.landing-card {
+  background: var(--white);
+  border: 1.5px solid rgba(201,150,42,0.3);
+  border-radius: 16px;
+  padding: 36px 40px;
+  width: 100%;
+  max-width: 420px;
+  box-shadow: 0 8px 40px rgba(155,28,28,0.1);
+  text-align: center;
+}
+.landing-card-prompt {
+  font-family: 'Cinzel', serif;
+  font-size: 1rem;
+  color: var(--ink-mid);
+  letter-spacing: 1.5px;
+  margin-bottom: 20px;
+}
+.landing-input {
+  width: 100%;
+  padding: 14px 18px;
+  border: 2px solid rgba(201,150,42,0.35);
+  border-radius: 10px;
+  font-family: 'Noto Sans SC', sans-serif;
+  font-size: 16px;
+  background: var(--paper);
+  color: var(--ink);
+  text-align: center;
+  transition: all 0.2s;
+  margin-bottom: 16px;
+}
+.landing-input:focus {
+  outline: none;
+  border-color: var(--gold);
+  background: var(--white);
+  box-shadow: 0 0 0 4px rgba(201,150,42,0.1);
+}
+.landing-input::placeholder { color: #bbb; }
+.landing-btn {
+  width: 100%;
+  padding: 14px;
+  background: var(--red-dark);
+  color: var(--gold-light);
+  border: none;
+  border-radius: 10px;
+  font-family: 'Cinzel', serif;
+  font-size: 14px;
+  letter-spacing: 2px;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 4px 16px rgba(107,15,15,0.3);
+}
+.landing-btn:hover {
+  background: var(--red);
+  box-shadow: 0 6px 20px rgba(107,15,15,0.4);
+  transform: translateY(-1px);
+}
+.landing-btn:active { transform: translateY(0); }
+.landing-hint {
+  margin-top: 14px;
+  font-size: 12px;
+  color: #bbb;
+  font-style: italic;
+}
+#app { display: none; }
+
+
+/* SEARCH BAR */
+.search-bar-wrap {
+  margin-bottom: 16px;
+  position: relative;
+}
+.search-bar-wrap input {
+  width: 100%;
+  padding: 11px 16px 11px 40px;
+  border: 1.5px solid rgba(201,150,42,0.35);
+  border-radius: 10px;
+  font-family: 'Noto Sans SC', sans-serif;
+  font-size: 14px;
+  background: var(--white);
+  color: var(--ink);
+  transition: all 0.2s;
+}
+.search-bar-wrap input:focus {
+  outline: none;
+  border-color: var(--gold);
+  box-shadow: 0 0 0 3px rgba(201,150,42,0.1);
+}
+.search-bar-wrap input::placeholder { color: #bbb; }
+.search-icon {
+  position: absolute;
+  left: 13px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 15px;
+  pointer-events: none;
+  opacity: 0.5;
+}
+.search-results-section { display: none; margin-bottom: 24px; }
+.search-results-section.visible { display: block; }
+.search-results-section .section-heading { color: var(--gold); }
+.no-results { color: #bbb; font-style: italic; font-size: 13px; padding: 12px 0; }
+
 </style>
 </head>
 <body>
 
+<!-- LANDING PAGE -->
+<div id="landing">
+  <div class="landing-border-top"></div>
+  <div class="landing-lanterns">
+    <span>🏮</span><span>🏮</span><span>🏮</span>
+  </div>
+  <div class="landing-title">Roxton Family Dinner</div>
+  <div class="landing-sub">New Sky &middot; Sunday May 24 &middot; 353 Spadina Ave</div>
+  <div class="landing-divider"></div>
+  <div class="landing-card">
+    <div class="landing-card-prompt">Who are you?</div>
+    <input class="landing-input" id="landing-name" type="text" placeholder="Your name" maxlength="30" autocomplete="off">
+    <button class="landing-btn" onclick="landingSetName()">Let's Order &rarr;</button>
+    <div class="landing-hint">Everyone sees the same order in real time</div>
+  </div>
+</div>
+
+<!-- MAIN APP -->
+<div id="app">
 <div class="top-border"></div>
 
 <header>
@@ -567,6 +751,18 @@ footer {
 <!-- MAIN -->
 <div class="main">
   <div class="menu-col" id="menu-col">
+
+    <!-- SEARCH -->
+    <div class="search-bar-wrap">
+      <span class="search-icon">🔍</span>
+      <input type="text" id="dish-search" placeholder="Search dishes by name…" oninput="handleSearch(this.value)" autocomplete="off">
+    </div>
+
+    <!-- SEARCH RESULTS -->
+    <div class="search-results-section" id="search-results-section">
+      <div class="section-heading">Search Results</div>
+      <div class="dish-grid" id="search-results-grid"></div>
+    </div>
 
     <!-- CATEGORY TABS -->
     <div class="category-tabs" id="cat-tabs"></div>
@@ -601,6 +797,35 @@ footer {
 </div>
 
 <footer>New Sky Restaurant · 353 Spadina Ave, Toronto · 416-596-8787 · Updates shared live across all devices</footer>
+
+<!-- ORDER MODAL -->
+<div class="modal-backdrop" id="modal-backdrop" onclick="closeModal(event)">
+  <div class="modal" id="modal">
+    <div class="modal-dish-name" id="modal-dish-name"></div>
+    <div class="modal-dish-price" id="modal-dish-price"></div>
+    <span class="modal-label">Any dietary notes?</span>
+    <div class="modal-checkboxes">
+      <label class="modal-check-row">
+        <input type="checkbox" id="check-gf">
+        <div>
+          <div class="modal-check-label">🌾 Gluten Free</div>
+          <div class="modal-check-sub">Ask the kitchen for a GF option</div>
+        </div>
+      </label>
+      <label class="modal-check-row">
+        <input type="checkbox" id="check-veg">
+        <div>
+          <div class="modal-check-label">🥦 Vegetarian</div>
+          <div class="modal-check-sub">Ask the kitchen for a veggie option</div>
+        </div>
+      </label>
+    </div>
+    <div class="modal-actions">
+      <button class="modal-cancel" onclick="closeModalDirect()">Cancel</button>
+      <button class="modal-confirm" onclick="confirmOrder()">Add to Order →</button>
+    </div>
+  </div>
+</div>
 
 <div class="toast" id="toast"></div>
 
@@ -903,21 +1128,57 @@ function switchTab(ci) {
 }
 
 // ── ORDER LOGIC ───────────────────────────────────────────────────────────────
-async function addOrder(key) {
+let pendingOrderKey = null;
+let pendingOrderDish = null;
+
+function addOrder(key) {
   if (!currentName) { toast('Set your name first (top of page)'); return; }
+  // Find dish details
+  let foundDish = null;
+  MENU.forEach(cat => cat.items.forEach(dish => {
+    if (dishKey(cat.cat, dish.name) === key) foundDish = dish;
+  }));
+  pendingOrderKey = key;
+  pendingOrderDish = foundDish;
+  document.getElementById('modal-dish-name').textContent = foundDish ? foundDish.name : key.split('::')[1];
+  document.getElementById('modal-dish-price').textContent = foundDish ? foundDish.price : '';
+  document.getElementById('check-gf').checked = false;
+  document.getElementById('check-veg').checked = false;
+  document.getElementById('modal-backdrop').classList.add('open');
+}
+
+function closeModal(e) {
+  if (e.target === document.getElementById('modal-backdrop')) closeModalDirect();
+}
+
+function closeModalDirect() {
+  document.getElementById('modal-backdrop').classList.remove('open');
+  pendingOrderKey = null;
+  pendingOrderDish = null;
+}
+
+async function confirmOrder() {
+  const key = pendingOrderKey;
+  if (!key) return;
+  const gf = document.getElementById('check-gf').checked;
+  const veg = document.getElementById('check-veg').checked;
+  closeModalDirect();
   try {
     const orders = await getData();
     if (!orders[key]) orders[key] = [];
     const existing = orders[key].find(o => o.name === currentName);
     if (existing) {
       existing.qty = (existing.qty || 1) + 1;
+      if (gf) existing.gf = true;
+      if (veg) existing.veg = true;
     } else {
-      orders[key].push({ name: currentName, qty: 1 });
+      orders[key].push({ name: currentName, qty: 1, gf: gf || false, veg: veg || false });
     }
     ordersCache = orders;
     await saveData(orders);
     renderOrders(orders);
-    toast('Added!');
+    const notes = [gf ? 'GF' : '', veg ? 'Veg' : ''].filter(Boolean).join(', ');
+    toast('Added!' + (notes ? ' (' + notes + ')' : ''));
   } catch(e) {
     toast('Error — please try again');
     console.error(e);
@@ -956,7 +1217,9 @@ function renderOrders(orders) {
         const tag = document.createElement('span');
         tag.className = 'order-tag';
         const label = o.qty > 1 ? `${o.name} ×${o.qty}` : o.name;
-        tag.innerHTML = `${esc(label)} <button class="remove-tag" title="Remove" onclick="removePersonOrder('${esc(key)}','${esc(o.name)}')">✕</button>`;
+        const gfBadge = o.gf ? '<span class="diet-badge gf">GF</span>' : '';
+        const vegBadge = o.veg ? '<span class="diet-badge veg">Veg</span>' : '';
+        tag.innerHTML = `${esc(label)}${gfBadge}${vegBadge} <button class="remove-tag" title="Remove" onclick="removePersonOrder('${esc(key)}','${esc(o.name)}')">✕</button>`;
         el.appendChild(tag);
       });
 
@@ -986,7 +1249,9 @@ function renderOrders(orders) {
     item.className = 'order-summary-item';
     const whoHtml = people.map(o => {
       const label = o.qty > 1 ? `${o.name} ×${o.qty}` : o.name;
-      return `<span class="osi-tag">${esc(label)}</span>`;
+      const gfBadge = o.gf ? '<span class="diet-badge gf">GF</span>' : '';
+      const vegBadge = o.veg ? '<span class="diet-badge veg">Veg</span>' : '';
+      return `<span class="osi-tag">${esc(label)}${gfBadge}${vegBadge}</span>`;
     }).join('');
     item.innerHTML = `<div class="osi-dish">${esc(dishName)}</div><div class="osi-who">${whoHtml}</div>`;
     listEl.appendChild(item);
@@ -1023,18 +1288,112 @@ function esc(str) {
   return String(str).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 }
 
-// ── INIT ─────────────────────────────────────────────────────────────────────
-if (currentName) {
-  document.getElementById('name-input').value = currentName;
+// ── SEARCH ───────────────────────────────────────────────────────────────────
+function handleSearch(query) {
+  const q = query.trim().toLowerCase();
+  const section = document.getElementById('search-results-section');
+  const grid = document.getElementById('search-results-grid');
+  const catTabs = document.getElementById('cat-tabs');
+  const menuSections = document.getElementById('menu-sections');
+
+  if (!q) {
+    section.classList.remove('visible');
+    catTabs.style.display = '';
+    menuSections.style.display = '';
+    grid.innerHTML = '';
+    return;
+  }
+
+  catTabs.style.display = 'none';
+  menuSections.style.display = 'none';
+  section.classList.add('visible');
+
+  const matches = [];
+  MENU.forEach(cat => {
+    cat.items.forEach(dish => {
+      if (dish.name.toLowerCase().includes(q) || (dish.cn && dish.cn.includes(q))) {
+        matches.push({ cat: cat.cat, dish });
+      }
+    });
+  });
+
+  grid.innerHTML = '';
+  if (matches.length === 0) {
+    grid.innerHTML = '<div class="no-results">No dishes match "' + esc(query) + '"</div>';
+    return;
+  }
+
+  matches.forEach(({ cat, dish }) => {
+    const key = dishKey(cat, dish.name);
+    const card = document.createElement('div');
+    card.className = 'dish-card';
+    card.id = 'search-card-' + CSS.escape(key);
+    const dishOrders = ordersCache[key] || [];
+    const orderTagsHtml = dishOrders.map(o => {
+      const label = o.qty > 1 ? `${o.name} ×${o.qty}` : o.name;
+      const gfBadge = o.gf ? '<span class="diet-badge gf">GF</span>' : '';
+      const vegBadge = o.veg ? '<span class="diet-badge veg">Veg</span>' : '';
+      return `<span class="order-tag">${esc(label)}${gfBadge}${vegBadge} <button class="remove-tag" onclick="removePersonOrder('${esc(key)}','${esc(o.name)}')">✕</button></span>`;
+    }).join('');
+    card.innerHTML = `
+      <div style="font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--ink-light);margin-bottom:3px;">${esc(cat)}</div>
+      <div class="dish-name">${dish.name}</div>
+      ${dish.cn ? `<div class="dish-chinese">${dish.cn}</div>` : ''}
+      <div class="dish-price">${dish.price}</div>
+      <div class="dish-orders">${orderTagsHtml}</div>
+      <button class="add-order-btn" onclick="addOrder('${esc(key)}')">+ I want this</button>
+    `;
+    if (dishOrders.length > 0) card.className += ' has-orders';
+    grid.appendChild(card);
+  });
 }
-updateNameBar();
+
+// ── LANDING ──────────────────────────────────────────────────────────────────
+function landingSetName() {
+  const val = document.getElementById('landing-name').value.trim();
+  if (!val) {
+    document.getElementById('landing-name').focus();
+    document.getElementById('landing-name').style.borderColor = 'var(--red)';
+    return;
+  }
+  currentName = val;
+  localStorage.setItem('newsky_name', val);
+  updateNameBar();
+  // Hide landing, show app
+  document.getElementById('landing').classList.add('hidden');
+  setTimeout(() => {
+    document.getElementById('landing').style.display = 'none';
+  }, 500);
+  document.getElementById('app').style.display = 'block';
+  loadOrders();
+}
+
+document.getElementById('landing-name').addEventListener('keydown', e => {
+  if (e.key === 'Enter') landingSetName();
+});
+
+// ── INIT ─────────────────────────────────────────────────────────────────────
 buildMenu();
-loadOrders();
-setInterval(loadOrders, 30000);
+
+if (currentName) {
+  // Skip landing, go straight to app
+  document.getElementById('landing').style.display = 'none';
+  document.getElementById('app').style.display = 'block';
+  updateNameBar();
+  loadOrders();
+} else {
+  // Show landing
+  document.getElementById('landing-name').focus();
+}
+
+setInterval(() => {
+  if (currentName) loadOrders();
+}, 30000);
 
 document.getElementById('name-input').addEventListener('keydown', e => {
   if (e.key === 'Enter') setName();
 });
 </script>
+</div><!-- /app -->
 </body>
 </html>
