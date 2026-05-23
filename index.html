@@ -336,22 +336,24 @@ h1 .sub {
 
 .section-heading {
   font-family: 'Cinzel', serif;
-  font-size: 1rem;
-  color: var(--red-dark);
-  letter-spacing: 2px;
-  margin-bottom: 12px;
-  padding-bottom: 10px;
-  border-bottom: 1px solid rgba(201,150,42,0.3);
+  font-size: 1.1rem;
+  color: var(--white);
+  letter-spacing: 3px;
+  margin: 28px 0 14px;
+  padding: 12px 18px;
+  background: var(--red-dark);
+  border-radius: 8px;
   display: flex;
   align-items: center;
   gap: 10px;
+  position: sticky;
+  top: 58px;
+  z-index: 10;
+  box-shadow: 0 2px 8px rgba(107,15,15,0.15);
 }
 
-.section-heading::after {
-  content: '';
-  flex: 1;
-  height: 1px;
-  background: linear-gradient(90deg, rgba(201,150,42,0.4), transparent);
+.menu-section:first-child .section-heading {
+  margin-top: 0;
 }
 
 /* DISH CARDS */
@@ -515,18 +517,41 @@ h1 .sub {
   to { opacity: 1; transform: translateX(0); }
 }
 
+.osi-cat-header {
+  font-family: 'Cinzel', serif;
+  font-size: 10px;
+  letter-spacing: 2px;
+  color: var(--gold);
+  text-transform: uppercase;
+  padding: 10px 0 4px;
+  border-top: 1px solid rgba(201,150,42,0.2);
+  margin-top: 6px;
+}
+
+.osi-cat-header:first-child { border-top: none; margin-top: 0; }
+
 .osi-dish {
-  font-size: 13px;
-  font-weight: 500;
+  font-size: 14px;
+  font-weight: 600;
   color: var(--ink);
   line-height: 1.35;
-  margin-bottom: 4px;
+  margin-bottom: 6px;
 }
 
 .osi-who {
   display: flex;
   flex-wrap: wrap;
   gap: 4px;
+  margin-bottom: 8px;
+}
+
+.osi-tag {
+  font-size: 12px;
+  background: var(--gold-pale);
+  color: var(--ink-mid);
+  padding: 3px 10px;
+  border-radius: 10px;
+  border: 1px solid rgba(201,150,42,0.3);
 }
 
 .osi-tag {
@@ -953,26 +978,30 @@ footer {
 
 /* ME TOO in sidebar */
 .osi-me-too {
-  display: inline-flex;
+  display: flex;
   align-items: center;
-  gap: 4px;
-  margin-top: 6px;
-  padding: 4px 10px;
-  background: var(--gold-pale);
-  border: 1px solid rgba(201,150,42,0.4);
-  border-radius: 14px;
-  color: var(--ink-mid);
-  font-size: 11px;
+  justify-content: center;
+  gap: 6px;
+  width: 100%;
+  padding: 10px 14px;
+  margin-bottom: 4px;
+  background: var(--red-dark);
+  border: none;
+  border-radius: 8px;
+  color: var(--gold-light);
+  font-family: 'Noto Sans SC', sans-serif;
+  font-size: 13px;
   font-weight: 500;
   cursor: pointer;
   transition: all 0.2s;
-  width: 100%;
-  justify-content: center;
+  box-shadow: 0 2px 8px rgba(107,15,15,0.2);
 }
 .osi-me-too:hover {
-  background: var(--red-dark);
-  border-color: var(--red-dark);
-  color: var(--gold-light);
+  background: var(--red);
+  box-shadow: 0 3px 12px rgba(107,15,15,0.3);
+}
+.osi-me-too:active {
+  transform: scale(0.98);
 }
 
 
@@ -987,6 +1016,147 @@ footer {
 .order-count-badge.you-in {
   color: #2d6a4f;
   font-weight: 700;
+}
+
+
+/* ═══════════════════════════════════════════════════════
+   MOBILE OPTIMIZATIONS  (max-width: 600px)
+   ═══════════════════════════════════════════════════════ */
+@media (max-width: 600px) {
+
+  /* Compact header */
+  header {
+    padding: 16px 16px 12px;
+  }
+  .lantern-row {
+    margin-bottom: 10px;
+  }
+  .lantern { font-size: 20px; }
+  h1 { font-size: 1.5rem; letter-spacing: 1px; }
+  h1 .sub { font-size: 0.5em; letter-spacing: 2px; }
+  .header-divider { margin-top: 10px; }
+
+  /* Name bar: compact, no label text */
+  .name-bar {
+    padding: 10px 14px;
+    gap: 8px;
+    justify-content: space-between;
+  }
+  .name-bar label { display: none; }
+  .name-bar input {
+    width: 100%;
+    flex: 1;
+    font-size: 16px; /* prevents iOS zoom on focus */
+  }
+  .name-bar > button {
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  .name-pill { font-size: 14px; padding: 8px 16px; }
+
+  /* Main layout: tighter padding */
+  .main { padding: 12px 12px 80px; }
+
+  /* Category tabs: horizontal scroll, no wrap */
+  .category-tabs {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    padding-bottom: 4px;
+    margin-bottom: 8px;
+    gap: 8px;
+  }
+  .category-tabs::-webkit-scrollbar { display: none; }
+  .tab-btn {
+    flex-shrink: 0;
+    padding: 8px 16px;
+    font-size: 13px;
+    white-space: nowrap;
+  }
+
+  /* Section headings: less top margin, correct sticky offset */
+  .section-heading {
+    top: 52px; /* matches mobile name bar height */
+    font-size: 0.85rem;
+    padding: 10px 14px;
+    margin: 20px 0 10px;
+    letter-spacing: 2px;
+  }
+
+  /* Dish grid: single full-width column */
+  .dish-grid {
+    grid-template-columns: 1fr;
+    gap: 8px;
+    margin-bottom: 16px;
+  }
+
+  /* Dish card: horizontal layout, bigger tap target */
+  .dish-card {
+    flex-direction: row;
+    align-items: center;
+    padding: 14px 14px;
+    gap: 0;
+    border-radius: 10px;
+  }
+  .dish-card:hover { transform: none; } /* no hover jitter on touch */
+  .dish-card:active { background: var(--gold-pale); }
+
+  /* Left side: name + chinese + badge */
+  .dish-card-info {
+    flex: 1;
+    min-width: 0;
+  }
+  .dish-name { font-size: 14px; }
+  .dish-chinese { font-size: 10px; }
+  .dish-price {
+    font-size: 12px;
+    margin-top: 2px;
+  }
+  .dish-orders { margin-top: 3px; }
+
+  /* Right side: big tap button */
+  .add-order-btn {
+    flex-shrink: 0;
+    margin-left: 10px;
+    margin-top: 0;
+    padding: 10px 14px;
+    font-size: 13px;
+    border-radius: 8px;
+    min-width: 80px;
+    text-align: center;
+  }
+
+  /* Search bar */
+  .search-bar-wrap { margin-bottom: 10px; }
+  .search-bar-wrap input { font-size: 16px; } /* prevents iOS zoom */
+
+  /* Modal: full-width bottom sheet on mobile */
+  .modal-backdrop {
+    align-items: flex-end;
+    padding: 0;
+  }
+  .modal {
+    border-radius: 20px 20px 0 0;
+    max-width: 100%;
+    padding: 24px 20px 36px;
+  }
+  .modal-dish-name { font-size: 1rem; }
+  .modal-check-label { font-size: 14px; }
+  .modal-check-row { padding: 14px; }
+  .modal-confirm, .modal-cancel { padding: 14px; font-size: 14px; }
+
+  /* Drawer: bigger me-too button */
+  .osi-me-too {
+    padding: 13px 14px;
+    font-size: 14px;
+    margin-bottom: 6px;
+  }
+  .osi-dish { font-size: 15px; }
+  .drawer-body { padding: 12px 16px 40px; }
+
+  /* Host section */
+  .host-section { padding: 0 12px; }
 }
 
 </style>
@@ -1470,10 +1640,12 @@ function buildMenu() {
       card.className = 'dish-card';
       card.id = 'card-' + CSS.escape(key);
       card.innerHTML = `
-        <div class="dish-name">${dish.name}</div>
-        ${dish.cn ? `<div class="dish-chinese">${dish.cn}</div>` : ''}
-        <div class="dish-price">${dish.price}</div>
-        <div class="dish-orders" id="orders-${CSS.escape(key)}"></div>
+        <div class="dish-card-info">
+          <div class="dish-name">${dish.name}</div>
+          ${dish.cn ? `<div class="dish-chinese">${dish.cn}</div>` : ''}
+          <div class="dish-price">${dish.price}</div>
+          <div class="dish-orders" id="orders-${CSS.escape(key)}"></div>
+        </div>
         <button class="add-order-btn" onclick="addOrder('${esc(key)}')">+ I want this</button>
       `;
       grid.appendChild(card);
@@ -1613,25 +1785,52 @@ function renderOrders(orders) {
   }
 
   listEl.innerHTML = '';
-  keys.forEach(key => {
-    const parts = key.split('::');
-    const dishName = parts[1] || key;
-    const people = orders[key];
 
-    const item = document.createElement('div');
-    item.className = 'order-summary-item';
-    const whoHtml = people.map(o => {
-      const label = o.qty > 1 ? `${o.name} ×${o.qty}` : o.name;
-      const gfBadge = o.gf ? '<span class="diet-badge gf">GF</span>' : '';
-      const vegBadge = o.veg ? '<span class="diet-badge veg">Veg</span>' : '';
-      return `<span class="osi-tag">${esc(label)}${gfBadge}${vegBadge}</span>`;
-    }).join('');
-    const alreadyInSidebar = people.some(o => o.name === currentName);
-    const meTooSidebar = (!alreadyInSidebar && currentName)
-      ? `<button class="osi-me-too" onclick="addOrder('${esc(key)}')">👋 I want this too!</button>`
-      : '';
-    item.innerHTML = `<div class="osi-dish">${esc(dishName)}</div><div class="osi-who">${whoHtml}</div>${meTooSidebar}`;
-    listEl.appendChild(item);
+  // Group keys by category
+  const byCat = {};
+  keys.forEach(key => {
+    const cat = key.split('::')[0];
+    if (!byCat[cat]) byCat[cat] = [];
+    byCat[cat].push(key);
+  });
+
+  // Render in menu order
+  MENU.forEach(cat => {
+    const catKeys = byCat[cat.cat];
+    if (!catKeys || catKeys.length === 0) return;
+
+    // Category header
+    const catHeader = document.createElement('div');
+    catHeader.className = 'osi-cat-header';
+    catHeader.textContent = cat.cat;
+    listEl.appendChild(catHeader);
+
+    catKeys.forEach(key => {
+      const dishName = key.split('::')[1] || key;
+      const people = orders[key];
+
+      const item = document.createElement('div');
+      item.className = 'order-summary-item';
+
+      const whoHtml = people.map(o => {
+        const label = o.qty > 1 ? `${o.name} ×${o.qty}` : o.name;
+        const gfBadge = o.gf ? '<span class="diet-badge gf">GF</span>' : '';
+        const vegBadge = o.veg ? '<span class="diet-badge veg">Veg</span>' : '';
+        return `<span class="osi-tag">${esc(label)}${gfBadge}${vegBadge}</span>`;
+      }).join('');
+
+      const alreadyIn = people.some(o => o.name === currentName);
+      const meTooBtn = (!alreadyIn && currentName)
+        ? `<button class="osi-me-too" onclick="addOrder('${esc(key)}')">👋 I want this too!</button>`
+        : `<div style="font-size:11px;color:#2d6a4f;font-weight:600;padding:2px 0;">✓ You're on this one</div>`;
+
+      item.innerHTML = `
+        <div class="osi-dish">${esc(dishName)}</div>
+        <div class="osi-who">${whoHtml}</div>
+        ${meTooBtn}
+      `;
+      listEl.appendChild(item);
+    });
   });
 
   const totalDishes = keys.length;
@@ -1673,9 +1872,11 @@ function esc(str) {
 function openDrawer() {
   document.getElementById('drawer-backdrop').classList.add('open');
   document.getElementById('drawer-panel').classList.add('open');
-  // Copy current order content into drawer
+  // Sync drawer with current sidebar content
   const src = document.getElementById('order-list').innerHTML;
   document.getElementById('drawer-order-list').innerHTML = src;
+  // Scroll drawer to top
+  document.getElementById('drawer-panel').scrollTop = 0;
 }
 
 function closeDrawer() {
@@ -1731,11 +1932,13 @@ function handleSearch(query) {
       ? `<span class="order-count-badge${alreadyInSearch ? ' you-in' : ''}">${alreadyInSearch ? `✓ You + ${countSearch - 1} other${countSearch - 1 !== 1 ? 's' : ''}` : `${countSearch} ordered`}</span>`
       : '';
     card.innerHTML = `
-      <div style="font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--ink-light);margin-bottom:3px;">${esc(cat)}</div>
-      <div class="dish-name">${dish.name}</div>
-      ${dish.cn ? `<div class="dish-chinese">${dish.cn}</div>` : ''}
-      <div class="dish-price">${dish.price}</div>
-      <div class="dish-orders">${countBadge}</div>
+      <div class="dish-card-info">
+        <div style="font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--ink-light);margin-bottom:3px;">${esc(cat)}</div>
+        <div class="dish-name">${dish.name}</div>
+        ${dish.cn ? `<div class="dish-chinese">${dish.cn}</div>` : ''}
+        <div class="dish-price">${dish.price}</div>
+        <div class="dish-orders">${countBadge}</div>
+      </div>
       <button class="add-order-btn" onclick="addOrder('${esc(key)}')">+ I want this</button>
     `;
     if (dishOrders.length > 0) card.className += ' has-orders';
