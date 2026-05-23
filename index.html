@@ -185,11 +185,18 @@ h1 .sub {
   grid-template-columns: 1fr 360px;
   gap: 28px;
   align-items: start;
+  width: 100%;
 }
 
 @media (max-width: 800px) {
-  .main { grid-template-columns: 1fr; }
-  .order-sidebar { display: none; } /* hidden on mobile, replaced by bottom drawer */
+  .main {
+    grid-template-columns: 1fr !important;
+    padding: 12px 12px 100px !important;
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+  .order-sidebar { display: none !important; }
+  .menu-col { width: 100% !important; min-width: 0 !important; }
 }
 
 /* MOBILE BOTTOM DRAWER */
@@ -1019,144 +1026,147 @@ footer {
 }
 
 
-/* ═══════════════════════════════════════════════════════
-   MOBILE OPTIMIZATIONS  (max-width: 600px)
-   ═══════════════════════════════════════════════════════ */
+
+/* ── STICKY TAB BAR (all screens) ── */
+.tabs-sticky-wrap {
+  position: sticky;
+  top: 52px;
+  z-index: 50;
+  background: var(--paper);
+  padding: 8px 0 6px;
+  border-bottom: 1px solid rgba(201,150,42,0.2);
+  margin-bottom: 4px;
+}
+
+/* ── MOBILE (≤600px) ── */
 @media (max-width: 600px) {
 
-  /* Compact header */
-  header {
-    padding: 16px 16px 12px;
-  }
-  .lantern-row {
-    margin-bottom: 10px;
-  }
-  .lantern { font-size: 20px; }
-  h1 { font-size: 1.5rem; letter-spacing: 1px; }
-  h1 .sub { font-size: 0.5em; letter-spacing: 2px; }
-  .header-divider { margin-top: 10px; }
+  /* Full-width everything */
+  body { overflow-x: hidden; }
+  #app { width: 100%; }
 
-  /* Name bar: compact, no label text */
+  /* Compact header */
+  header { padding: 14px 16px 12px; }
+  .lantern-row { margin-bottom: 8px; gap: 20px; }
+  .lantern { font-size: 22px; }
+  h1 { font-size: 1.4rem; letter-spacing: 1px; }
+  h1 .sub { font-size: 0.45em; letter-spacing: 2px; }
+  .header-divider { margin-top: 8px; display: none; }
+
+  /* Name bar: full width, no label */
   .name-bar {
-    padding: 10px 14px;
+    padding: 8px 12px;
     gap: 8px;
-    justify-content: space-between;
+    flex-wrap: nowrap;
   }
   .name-bar label { display: none; }
   .name-bar input {
-    width: 100%;
     flex: 1;
-    font-size: 16px; /* prevents iOS zoom on focus */
+    width: auto;
+    font-size: 16px;
+    min-width: 0;
   }
   .name-bar > button {
-    white-space: nowrap;
     flex-shrink: 0;
+    padding: 8px 14px !important;
+    font-size: 13px !important;
   }
-  .name-pill { font-size: 14px; padding: 8px 16px; }
+  .name-pill {
+    font-size: 13px;
+    padding: 7px 14px;
+  }
 
-  /* Main layout: tighter padding */
-  .main { padding: 12px 12px 80px; }
-
-  /* Category tabs: horizontal scroll, no wrap */
+  /* Tabs: horizontal scroll strip */
+  .tabs-sticky-wrap { top: 46px; padding: 6px 0 4px; }
   .category-tabs {
-    flex-wrap: nowrap;
-    overflow-x: auto;
+    flex-wrap: nowrap !important;
+    overflow-x: auto !important;
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
-    padding-bottom: 4px;
-    margin-bottom: 8px;
-    gap: 8px;
+    padding: 2px 12px 4px;
+    margin-bottom: 0;
+    gap: 6px;
   }
   .category-tabs::-webkit-scrollbar { display: none; }
   .tab-btn {
     flex-shrink: 0;
-    padding: 8px 16px;
-    font-size: 13px;
     white-space: nowrap;
+    padding: 8px 14px;
+    font-size: 13px;
   }
 
-  /* Section headings: less top margin, correct sticky offset */
+  /* Section headings: sticky below tabs */
   .section-heading {
-    top: 52px; /* matches mobile name bar height */
-    font-size: 0.85rem;
-    padding: 10px 14px;
-    margin: 20px 0 10px;
+    top: 96px;
+    font-size: 0.8rem;
+    padding: 9px 14px;
+    margin: 16px 0 8px;
     letter-spacing: 2px;
+    border-radius: 6px;
   }
+  .menu-section:first-child .section-heading { margin-top: 0; }
 
   /* Dish grid: single full-width column */
   .dish-grid {
-    grid-template-columns: 1fr;
-    gap: 8px;
-    margin-bottom: 16px;
+    grid-template-columns: 1fr !important;
+    gap: 6px;
+    margin-bottom: 12px;
   }
 
-  /* Dish card: horizontal layout, bigger tap target */
+  /* Dish card: horizontal, full width */
   .dish-card {
-    flex-direction: row;
-    align-items: center;
-    padding: 14px 14px;
-    gap: 0;
-    border-radius: 10px;
+    flex-direction: row !important;
+    align-items: center !important;
+    padding: 12px 12px !important;
+    gap: 0 !important;
+    border-radius: 8px;
+    width: 100%;
   }
-  .dish-card:hover { transform: none; } /* no hover jitter on touch */
-  .dish-card:active { background: var(--gold-pale); }
+  .dish-card:hover { transform: none; }
+  .dish-card:active { opacity: 0.85; }
 
-  /* Left side: name + chinese + badge */
-  .dish-card-info {
-    flex: 1;
-    min-width: 0;
-  }
+  .dish-card-info { flex: 1; min-width: 0; }
   .dish-name { font-size: 14px; }
   .dish-chinese { font-size: 10px; }
-  .dish-price {
-    font-size: 12px;
-    margin-top: 2px;
-  }
-  .dish-orders { margin-top: 3px; }
+  .dish-price { font-size: 12px; margin-top: 1px; }
 
-  /* Right side: big tap button */
+  /* Big tap button on right */
   .add-order-btn {
-    flex-shrink: 0;
-    margin-left: 10px;
-    margin-top: 0;
-    padding: 10px 14px;
-    font-size: 13px;
+    flex-shrink: 0 !important;
+    margin-left: 10px !important;
+    margin-top: 0 !important;
+    padding: 10px 12px !important;
+    font-size: 12px !important;
     border-radius: 8px;
-    min-width: 80px;
+    min-width: 76px;
     text-align: center;
   }
 
-  /* Search bar */
-  .search-bar-wrap { margin-bottom: 10px; }
-  .search-bar-wrap input { font-size: 16px; } /* prevents iOS zoom */
+  /* Search */
+  .search-bar-wrap { margin-bottom: 8px; }
+  .search-bar-wrap input { font-size: 16px; }
 
-  /* Modal: full-width bottom sheet on mobile */
-  .modal-backdrop {
-    align-items: flex-end;
-    padding: 0;
-  }
+  /* Modal becomes bottom sheet */
+  .modal-backdrop { align-items: flex-end !important; padding: 0 !important; }
   .modal {
-    border-radius: 20px 20px 0 0;
-    max-width: 100%;
-    padding: 24px 20px 36px;
+    border-radius: 20px 20px 0 0 !important;
+    max-width: 100% !important;
+    padding: 20px 18px 36px !important;
   }
-  .modal-dish-name { font-size: 1rem; }
-  .modal-check-label { font-size: 14px; }
-  .modal-check-row { padding: 14px; }
+  .modal-check-row { padding: 12px 14px; }
   .modal-confirm, .modal-cancel { padding: 14px; font-size: 14px; }
 
-  /* Drawer: bigger me-too button */
-  .osi-me-too {
-    padding: 13px 14px;
-    font-size: 14px;
-    margin-bottom: 6px;
-  }
-  .osi-dish { font-size: 15px; }
-  .drawer-body { padding: 12px 16px 40px; }
+  /* Bottom bar */
+  .mobile-order-btn { padding: 16px 20px; }
 
-  /* Host section */
-  .host-section { padding: 0 12px; }
+  /* Drawer */
+  .osi-me-too { padding: 13px 14px; font-size: 14px; }
+  .osi-dish { font-size: 15px; }
+  .drawer-body { padding: 12px 14px 50px; }
+
+  /* Host / footer */
+  .host-section { padding: 0 12px; margin-bottom: 100px; }
+  footer { padding-bottom: 100px; }
 }
 
 </style>
@@ -1223,8 +1233,10 @@ footer {
       <div class="dish-grid" id="search-results-grid"></div>
     </div>
 
-    <!-- CATEGORY TABS -->
-    <div class="category-tabs" id="cat-tabs"></div>
+    <!-- CATEGORY TABS (sticky jump nav) -->
+    <div class="tabs-sticky-wrap" id="tabs-sticky-wrap">
+      <div class="category-tabs" id="cat-tabs"></div>
+    </div>
 
     <!-- MENU SECTIONS -->
     <div id="menu-sections"></div>
@@ -1662,7 +1674,9 @@ function switchTab(ci) {
   });
   const sec = document.getElementById('sec-' + ci);
   if (sec) {
-    const offset = 120; // name bar + tab bar height
+    const nameBar = document.querySelector('.name-bar');
+    const tabsWrap = document.getElementById('tabs-sticky-wrap');
+    const offset = (nameBar ? nameBar.offsetHeight : 52) + (tabsWrap ? tabsWrap.offsetHeight : 44) + 6;
     const top = sec.getBoundingClientRect().top + window.scrollY - offset;
     window.scrollTo({ top, behavior: 'smooth' });
   }
@@ -1990,16 +2004,32 @@ setInterval(() => {
 
 // Scroll spy: highlight active tab as user scrolls through sections
 window.addEventListener('scroll', () => {
+  const searchSection = document.getElementById('search-results-section');
+  if (searchSection && searchSection.classList.contains('visible')) return;
+
   const sections = document.querySelectorAll('.menu-section');
-  const offset = 140;
+  const nameBar = document.querySelector('.name-bar');
+  const tabsWrap = document.getElementById('tabs-sticky-wrap');
+  const offset = (nameBar ? nameBar.offsetHeight : 52) + (tabsWrap ? tabsWrap.offsetHeight : 44) + 10;
+
   let activeIdx = 0;
   sections.forEach((sec, i) => {
     const rect = sec.getBoundingClientRect();
     if (rect.top <= offset) activeIdx = i;
   });
-  document.querySelectorAll('.tab-btn').forEach((b, i) => {
+
+  const tabs = document.querySelectorAll('.tab-btn');
+  tabs.forEach((b, i) => {
     b.className = 'tab-btn' + (i === activeIdx ? ' active' : '');
   });
+
+  // Auto-scroll active tab into view on mobile
+  if (window.innerWidth <= 600) {
+    const activeTab = tabs[activeIdx];
+    if (activeTab) {
+      activeTab.scrollIntoView({ inline: 'nearest', behavior: 'smooth', block: 'nearest' });
+    }
+  }
 }, { passive: true });
 
 document.getElementById('name-input').addEventListener('keydown', e => {
