@@ -189,8 +189,114 @@ h1 .sub {
 
 @media (max-width: 800px) {
   .main { grid-template-columns: 1fr; }
-  .order-sidebar { order: -1; }
+  .order-sidebar { display: none; } /* hidden on mobile, replaced by bottom drawer */
 }
+
+/* MOBILE BOTTOM DRAWER */
+.mobile-order-btn {
+  display: none;
+}
+@media (max-width: 800px) {
+  .mobile-order-btn {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 200;
+    background: var(--red-dark);
+    color: var(--gold-light);
+    padding: 14px 20px;
+    font-family: 'Cinzel', serif;
+    font-size: 14px;
+    letter-spacing: 1px;
+    cursor: pointer;
+    border: none;
+    border-top: 2px solid var(--gold);
+    box-shadow: 0 -4px 20px rgba(107,15,15,0.3);
+  }
+  .mobile-order-btn .mob-btn-count {
+    background: var(--gold);
+    color: var(--red-dark);
+    font-size: 12px;
+    font-weight: 700;
+    padding: 2px 10px;
+    border-radius: 12px;
+    font-family: 'Noto Sans SC', sans-serif;
+  }
+  /* bottom padding so content doesn't hide behind button */
+  footer { padding-bottom: 80px; }
+  .host-section { margin-bottom: 80px; }
+}
+
+/* DRAWER BACKDROP */
+.drawer-backdrop {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(26,10,10,0.5);
+  z-index: 300;
+}
+.drawer-backdrop.open { display: block; }
+
+/* DRAWER PANEL */
+.drawer-panel {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 400;
+  background: var(--white);
+  border-radius: 20px 20px 0 0;
+  border-top: 2px solid var(--gold);
+  max-height: 75vh;
+  overflow-y: auto;
+  transform: translateY(100%);
+  transition: transform 0.35s cubic-bezier(0.32, 0.72, 0, 1);
+  box-shadow: 0 -8px 40px rgba(107,15,15,0.2);
+}
+.drawer-panel.open {
+  transform: translateY(0);
+}
+.drawer-handle {
+  text-align: center;
+  padding: 12px 0 0;
+  cursor: pointer;
+}
+.drawer-handle::before {
+  content: '';
+  display: inline-block;
+  width: 40px;
+  height: 4px;
+  background: rgba(201,150,42,0.35);
+  border-radius: 2px;
+}
+.drawer-header {
+  background: var(--red-dark);
+  padding: 14px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 8px;
+}
+.drawer-header h2 {
+  font-family: 'Cinzel', serif;
+  font-size: 0.9rem;
+  color: var(--gold-light);
+  letter-spacing: 2px;
+}
+.drawer-close {
+  background: none;
+  border: 1px solid rgba(232,184,75,0.4);
+  color: var(--gold-light);
+  padding: 4px 10px;
+  border-radius: 4px;
+  font-size: 12px;
+  cursor: pointer;
+}
+.drawer-body { padding: 16px; }
 
 /* CATEGORY TABS */
 .category-tabs {
@@ -226,8 +332,7 @@ h1 .sub {
 }
 
 /* MENU SECTION */
-.menu-section { display: none; }
-.menu-section.visible { display: block; }
+.menu-section { display: block; }
 
 .section-heading {
   font-family: 'Cinzel', serif;
@@ -821,6 +926,69 @@ footer {
 .diet-badge.gf  { background: #d4edda; color: #2d6a4f; }
 .diet-badge.veg { background: #d1ecf1; color: #0c5460; }
 
+
+/* ME TOO BUTTON */
+.me-too-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  margin-top: 6px;
+  padding: 5px 11px;
+  background: var(--gold-pale);
+  border: 1.5px solid rgba(201,150,42,0.45);
+  border-radius: 20px;
+  color: var(--ink-mid);
+  font-family: 'Noto Sans SC', sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.me-too-btn:hover {
+  background: var(--red-dark);
+  border-color: var(--red-dark);
+  color: var(--gold-light);
+}
+.me-too-btn .me-too-icon { font-size: 12px; }
+
+/* ME TOO in sidebar */
+.osi-me-too {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 6px;
+  padding: 4px 10px;
+  background: var(--gold-pale);
+  border: 1px solid rgba(201,150,42,0.4);
+  border-radius: 14px;
+  color: var(--ink-mid);
+  font-size: 11px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  width: 100%;
+  justify-content: center;
+}
+.osi-me-too:hover {
+  background: var(--red-dark);
+  border-color: var(--red-dark);
+  color: var(--gold-light);
+}
+
+
+/* ORDER COUNT BADGE on dish cards */
+.order-count-badge {
+  display: inline-block;
+  font-size: 11px;
+  color: var(--gold);
+  font-weight: 500;
+  margin-top: 2px;
+}
+.order-count-badge.you-in {
+  color: #2d6a4f;
+  font-weight: 700;
+}
+
 </style>
 </head>
 <body>
@@ -918,6 +1086,23 @@ footer {
 </div>
 
 <footer>New Sky Restaurant · 353 Spadina Ave, Toronto · 416-596-8787 · Updates shared live across all devices</footer>
+
+<!-- MOBILE BOTTOM DRAWER -->
+<div class="drawer-backdrop" id="drawer-backdrop" onclick="closeDrawer()"></div>
+<div class="drawer-panel" id="drawer-panel">
+  <div class="drawer-handle" onclick="closeDrawer()"></div>
+  <div class="drawer-header">
+    <h2>The Order So Far</h2>
+    <button class="drawer-close" onclick="closeDrawer()">✕ Close</button>
+  </div>
+  <div class="drawer-body" id="drawer-order-list"></div>
+</div>
+
+<!-- MOBILE ORDER BUTTON -->
+<button class="mobile-order-btn" id="mobile-order-btn" onclick="openDrawer()">
+  <span>🥢 View Order</span>
+  <span class="mob-btn-count" id="mob-btn-count">0 dishes</span>
+</button>
 
 <!-- ORDER MODAL -->
 <div class="modal-backdrop" id="modal-backdrop" onclick="closeModal(event)">
@@ -1268,7 +1453,7 @@ function buildMenu() {
 
     // Section
     const sec = document.createElement('div');
-    sec.className = 'menu-section' + (ci === 0 ? ' visible' : '');
+    sec.className = 'menu-section';
     sec.id = 'sec-' + ci;
 
     const heading = document.createElement('div');
@@ -1303,9 +1488,12 @@ function switchTab(ci) {
   document.querySelectorAll('.tab-btn').forEach((b, i) => {
     b.className = 'tab-btn' + (i === ci ? ' active' : '');
   });
-  document.querySelectorAll('.menu-section').forEach((s, i) => {
-    s.className = 'menu-section' + (i === ci ? ' visible' : '');
-  });
+  const sec = document.getElementById('sec-' + ci);
+  if (sec) {
+    const offset = 120; // name bar + tab bar height
+    const top = sec.getBoundingClientRect().top + window.scrollY - offset;
+    window.scrollTo({ top, behavior: 'smooth' });
+  }
 }
 
 // ── ORDER LOGIC ───────────────────────────────────────────────────────────────
@@ -1394,15 +1582,19 @@ function renderOrders(orders) {
 
       const dishOrders = orders[key] || [];
       el.innerHTML = '';
-      dishOrders.forEach(o => {
-        const tag = document.createElement('span');
-        tag.className = 'order-tag';
-        const label = o.qty > 1 ? `${o.name} ×${o.qty}` : o.name;
-        const gfBadge = o.gf ? '<span class="diet-badge gf">GF</span>' : '';
-        const vegBadge = o.veg ? '<span class="diet-badge veg">Veg</span>' : '';
-        tag.innerHTML = `${esc(label)}${gfBadge}${vegBadge} <button class="remove-tag" title="Remove" onclick="removePersonOrder('${esc(key)}','${esc(o.name)}')">✕</button>`;
-        el.appendChild(tag);
-      });
+
+      // Just show a subtle count badge on the card, no tags
+      if (dishOrders.length > 0) {
+        const count = dishOrders.reduce((sum, o) => sum + (o.qty || 1), 0);
+        const alreadyIn = dishOrders.some(o => o.name === currentName);
+        const badge = document.createElement('span');
+        badge.className = 'order-count-badge';
+        badge.textContent = alreadyIn
+          ? `✓ You + ${count - 1} other${count - 1 !== 1 ? 's' : ''}`
+          : `${count} ordered`;
+        if (alreadyIn) badge.classList.add('you-in');
+        el.appendChild(badge);
+      }
 
       if (card) {
         card.className = 'dish-card' + (dishOrders.length > 0 ? ' has-orders' : '');
@@ -1434,13 +1626,21 @@ function renderOrders(orders) {
       const vegBadge = o.veg ? '<span class="diet-badge veg">Veg</span>' : '';
       return `<span class="osi-tag">${esc(label)}${gfBadge}${vegBadge}</span>`;
     }).join('');
-    item.innerHTML = `<div class="osi-dish">${esc(dishName)}</div><div class="osi-who">${whoHtml}</div>`;
+    const alreadyInSidebar = people.some(o => o.name === currentName);
+    const meTooSidebar = (!alreadyInSidebar && currentName)
+      ? `<button class="osi-me-too" onclick="addOrder('${esc(key)}')">👋 I want this too!</button>`
+      : '';
+    item.innerHTML = `<div class="osi-dish">${esc(dishName)}</div><div class="osi-who">${whoHtml}</div>${meTooSidebar}`;
     listEl.appendChild(item);
   });
 
   const totalDishes = keys.length;
   const totalOrders = Object.values(orders).reduce((sum, arr) => sum + (arr ? arr.length : 0), 0);
   document.getElementById('sidebar-footer').textContent = `${totalDishes} dish${totalDishes !== 1 ? 'es' : ''} · ${totalOrders} order${totalOrders !== 1 ? 's' : ''} · Auto-refreshes every 30s`;
+
+  // Update mobile button count
+  const mobCount = document.getElementById('mob-btn-count');
+  if (mobCount) mobCount.textContent = totalDishes === 0 ? 'No dishes yet' : `${totalDishes} dish${totalDishes !== 1 ? 'es' : ''}`;
 }
 
 async function loadOrders() {
@@ -1469,6 +1669,20 @@ function esc(str) {
   return String(str).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 }
 
+// ── MOBILE DRAWER ────────────────────────────────────────────────────────────
+function openDrawer() {
+  document.getElementById('drawer-backdrop').classList.add('open');
+  document.getElementById('drawer-panel').classList.add('open');
+  // Copy current order content into drawer
+  const src = document.getElementById('order-list').innerHTML;
+  document.getElementById('drawer-order-list').innerHTML = src;
+}
+
+function closeDrawer() {
+  document.getElementById('drawer-backdrop').classList.remove('open');
+  document.getElementById('drawer-panel').classList.remove('open');
+}
+
 // ── SEARCH ───────────────────────────────────────────────────────────────────
 function handleSearch(query) {
   const q = query.trim().toLowerCase();
@@ -1488,6 +1702,7 @@ function handleSearch(query) {
   catTabs.style.display = 'none';
   menuSections.style.display = 'none';
   section.classList.add('visible');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
 
   const matches = [];
   MENU.forEach(cat => {
@@ -1510,18 +1725,17 @@ function handleSearch(query) {
     card.className = 'dish-card';
     card.id = 'search-card-' + CSS.escape(key);
     const dishOrders = ordersCache[key] || [];
-    const orderTagsHtml = dishOrders.map(o => {
-      const label = o.qty > 1 ? `${o.name} ×${o.qty}` : o.name;
-      const gfBadge = o.gf ? '<span class="diet-badge gf">GF</span>' : '';
-      const vegBadge = o.veg ? '<span class="diet-badge veg">Veg</span>' : '';
-      return `<span class="order-tag">${esc(label)}${gfBadge}${vegBadge} <button class="remove-tag" onclick="removePersonOrder('${esc(key)}','${esc(o.name)}')">✕</button></span>`;
-    }).join('');
+    const alreadyInSearch = dishOrders.some(o => o.name === currentName);
+    const countSearch = dishOrders.reduce((sum, o) => sum + (o.qty || 1), 0);
+    const countBadge = dishOrders.length > 0
+      ? `<span class="order-count-badge${alreadyInSearch ? ' you-in' : ''}">${alreadyInSearch ? `✓ You + ${countSearch - 1} other${countSearch - 1 !== 1 ? 's' : ''}` : `${countSearch} ordered`}</span>`
+      : '';
     card.innerHTML = `
       <div style="font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--ink-light);margin-bottom:3px;">${esc(cat)}</div>
       <div class="dish-name">${dish.name}</div>
       ${dish.cn ? `<div class="dish-chinese">${dish.cn}</div>` : ''}
       <div class="dish-price">${dish.price}</div>
-      <div class="dish-orders">${orderTagsHtml}</div>
+      <div class="dish-orders">${countBadge}</div>
       <button class="add-order-btn" onclick="addOrder('${esc(key)}')">+ I want this</button>
     `;
     if (dishOrders.length > 0) card.className += ' has-orders';
@@ -1570,6 +1784,20 @@ if (currentName) {
 setInterval(() => {
   if (currentName) loadOrders();
 }, 30000);
+
+// Scroll spy: highlight active tab as user scrolls through sections
+window.addEventListener('scroll', () => {
+  const sections = document.querySelectorAll('.menu-section');
+  const offset = 140;
+  let activeIdx = 0;
+  sections.forEach((sec, i) => {
+    const rect = sec.getBoundingClientRect();
+    if (rect.top <= offset) activeIdx = i;
+  });
+  document.querySelectorAll('.tab-btn').forEach((b, i) => {
+    b.className = 'tab-btn' + (i === activeIdx ? ' active' : '');
+  });
+}, { passive: true });
 
 document.getElementById('name-input').addEventListener('keydown', e => {
   if (e.key === 'Enter') setName();
