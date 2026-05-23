@@ -815,6 +815,21 @@ footer {
   transform: translateY(-1px);
 }
 .landing-btn:active { transform: translateY(0); }
+.landing-instructions {
+  background: rgba(201,150,42,0.08);
+  border-left: 3px solid var(--gold);
+  border-radius: 0 8px 8px 0;
+  padding: 14px 16px;
+  margin-bottom: 22px;
+  text-align: left;
+}
+.landing-instructions p {
+  font-size: 14px;
+  line-height: 1.65;
+  color: var(--ink-mid);
+  font-weight: 300;
+}
+
 .landing-hint {
   margin-top: 14px;
   font-size: 12px;
@@ -1219,7 +1234,10 @@ footer {
   <div class="landing-sub">New Sky &middot; Sunday May 24 &middot; 353 Spadina Ave</div>
   <div class="landing-divider"></div>
   <div class="landing-card">
-    <div class="landing-card-prompt">Who are you?</div>
+    <div class="landing-instructions">
+      <p>We're ordering food for tomorrow's dinner &mdash; pick everything you'd like, even if someone else has already chosen it. That helps us figure out quantities. You can also browse what others have picked and add yourself to any dish through the &ldquo;View Order&rdquo; tab.</p>
+    </div>
+    <div class="landing-card-prompt">Start by giving us your name:</div>
     <input class="landing-input" id="landing-name" type="text" placeholder="Your name" maxlength="30" autocomplete="off">
     <button class="landing-btn" onclick="landingSetName()">Let's Order &rarr;</button>
     <div class="landing-hint">Everyone sees the same order in real time</div>
