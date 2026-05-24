@@ -1712,7 +1712,7 @@ function buildMenu() {
           <div class="dish-price">${dish.price}</div>
           <div class="dish-orders" id="orders-${CSS.escape(key)}"></div>
         </div>
-        <button class="add-order-btn" onclick="addOrder('${esc(key)}')">+ I want this</button>
+        <button class="add-order-btn" data-key="${key.replace(/"/g,'&quot;')}" onclick="addOrder(this.dataset.key)">+ I want this</button>
       `;
       grid.appendChild(card);
     });
@@ -1838,11 +1838,14 @@ function renderOrderList(container, orders, keys) {
       if (alreadyIn) {
         actionBtn.className = 'osi-remove-me';
         actionBtn.textContent = '✕ Remove me from this';
-        actionBtn.onclick = () => removePersonOrder(key, currentName);
+        actionBtn.dataset.key = key;
+        actionBtn.dataset.name = currentName;
+        actionBtn.onclick = function() { removePersonOrder(this.dataset.key, this.dataset.name); };
       } else {
         actionBtn.className = 'osi-me-too';
         actionBtn.textContent = '👋 I want this too!';
-        actionBtn.onclick = () => addOrder(key);
+        actionBtn.dataset.key = key;
+        actionBtn.onclick = function() { addOrder(this.dataset.key); };
       }
 
       const dishDiv = document.createElement('div');
@@ -1898,7 +1901,9 @@ function renderOrders(orders) {
             ? `✓ You + ${others} other${others !== 1 ? 's' : ''} — tap to remove`
             : `✓ You — tap to remove`;
           badge.title = 'Remove yourself from this dish';
-          badge.onclick = () => removePersonOrder(key, currentName);
+          badge.dataset.key = key;
+          badge.dataset.name = currentName;
+          badge.onclick = function() { removePersonOrder(this.dataset.key, this.dataset.name); };
           el.appendChild(badge);
         } else {
           const badge = document.createElement('span');
@@ -2038,7 +2043,7 @@ function handleSearch(query) {
         <div class="dish-price">${dish.price}</div>
         <div class="dish-orders">${countBadge}</div>
       </div>
-      <button class="add-order-btn" onclick="addOrder('${esc(key)}')">+ I want this</button>
+      <button class="add-order-btn" data-key="${key.replace(/"/g,'&quot;')}" onclick="addOrder(this.dataset.key)">+ I want this</button>
     `;
     if (dishOrders.length > 0) card.className += ' has-orders';
     grid.appendChild(card);
