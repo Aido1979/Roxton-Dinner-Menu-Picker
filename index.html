@@ -1702,18 +1702,45 @@ function buildMenu() {
 
     cat.items.forEach(dish => {
       const key = dishKey(cat.cat, dish.name);
+
       const card = document.createElement('div');
       card.className = 'dish-card';
       card.id = 'card-' + CSS.escape(key);
-      card.innerHTML = `
-        <div class="dish-card-info">
-          <div class="dish-name">${dish.name}</div>
-          ${dish.cn ? `<div class="dish-chinese">${dish.cn}</div>` : ''}
-          <div class="dish-price">${dish.price}</div>
-          <div class="dish-orders" id="orders-${CSS.escape(key)}"></div>
-        </div>
-        <button class="add-order-btn" data-key="${key.replace(/"/g,'&quot;')}" onclick="addOrder(this.dataset.key)">+ I want this</button>
-      `;
+
+      const info = document.createElement('div');
+      info.className = 'dish-card-info';
+
+      const nameEl = document.createElement('div');
+      nameEl.className = 'dish-name';
+      nameEl.textContent = dish.name;
+      info.appendChild(nameEl);
+
+      if (dish.cn) {
+        const cnEl = document.createElement('div');
+        cnEl.className = 'dish-chinese';
+        cnEl.textContent = dish.cn;
+        info.appendChild(cnEl);
+      }
+
+      const priceEl = document.createElement('div');
+      priceEl.className = 'dish-price';
+      priceEl.textContent = dish.price;
+      info.appendChild(priceEl);
+
+      const ordersEl = document.createElement('div');
+      ordersEl.className = 'dish-orders';
+      ordersEl.id = 'orders-' + CSS.escape(key);
+      info.appendChild(ordersEl);
+
+      card.appendChild(info);
+
+      const btn = document.createElement('button');
+      btn.className = 'add-order-btn';
+      btn.textContent = '+ I want this';
+      btn.dataset.key = key;
+      btn.onclick = function() { addOrder(this.dataset.key); };
+      card.appendChild(btn);
+
       grid.appendChild(card);
     });
 
@@ -2026,26 +2053,59 @@ function handleSearch(query) {
 
   matches.forEach(({ cat, dish }) => {
     const key = dishKey(cat, dish.name);
-    const card = document.createElement('div');
-    card.className = 'dish-card';
-    card.id = 'search-card-' + CSS.escape(key);
     const dishOrders = ordersCache[key] || [];
     const alreadyInSearch = dishOrders.some(o => o.name === currentName);
     const countSearch = dishOrders.reduce((sum, o) => sum + (o.qty || 1), 0);
-    const countBadge = dishOrders.length > 0
-      ? `<span class="order-count-badge${alreadyInSearch ? ' you-in' : ''}">${alreadyInSearch ? `✓ You + ${countSearch - 1} other${countSearch - 1 !== 1 ? 's' : ''}` : `${countSearch} ordered`}</span>`
-      : '';
-    card.innerHTML = `
-      <div class="dish-card-info">
-        <div style="font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--ink-light);margin-bottom:3px;">${esc(cat)}</div>
-        <div class="dish-name">${dish.name}</div>
-        ${dish.cn ? `<div class="dish-chinese">${dish.cn}</div>` : ''}
-        <div class="dish-price">${dish.price}</div>
-        <div class="dish-orders">${countBadge}</div>
-      </div>
-      <button class="add-order-btn" data-key="${key.replace(/"/g,'&quot;')}" onclick="addOrder(this.dataset.key)">+ I want this</button>
-    `;
-    if (dishOrders.length > 0) card.className += ' has-orders';
+
+    const card = document.createElement('div');
+    card.className = 'dish-card' + (dishOrders.length > 0 ? ' has-orders' : '');
+    card.id = 'search-card-' + CSS.escape(key);
+
+    // Info column
+    const info = document.createElement('div');
+    info.className = 'dish-card-info';
+
+    const catLabel = document.createElement('div');
+    catLabel.style.cssText = 'font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--ink-light);margin-bottom:3px;';
+    catLabel.textContent = cat;
+    info.appendChild(catLabel);
+
+    const nameEl = document.createElement('div');
+    nameEl.className = 'dish-name';
+    nameEl.textContent = dish.name;
+    info.appendChild(nameEl);
+
+    if (dish.cn) {
+      const cnEl = document.createElement('div');
+      cnEl.className = 'dish-chinese';
+      cnEl.textContent = dish.cn;
+      info.appendChild(cnEl);
+    }
+
+    const priceEl = document.createElement('div');
+    priceEl.className = 'dish-price';
+    priceEl.textContent = dish.price;
+    info.appendChild(priceEl);
+
+    if (dishOrders.length > 0) {
+      const badge = document.createElement('span');
+      badge.className = 'order-count-badge' + (alreadyInSearch ? ' you-in' : '');
+      badge.textContent = alreadyInSearch
+        ? (countSearch - 1 > 0 ? `✓ You + ${countSearch - 1} other${countSearch - 1 !== 1 ? 's' : ''}` : '✓ You')
+        : `${countSearch} ordered`;
+      info.appendChild(badge);
+    }
+
+    card.appendChild(info);
+
+    // Button — key stored on element, never injected into HTML string
+    const btn = document.createElement('button');
+    btn.className = 'add-order-btn';
+    btn.textContent = '+ I want this';
+    btn.dataset.key = key;
+    btn.onclick = function() { addOrder(this.dataset.key); };
+    card.appendChild(btn);
+
     grid.appendChild(card);
   });
 }
