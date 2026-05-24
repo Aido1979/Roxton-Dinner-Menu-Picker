@@ -1220,6 +1220,106 @@ footer {
   footer { padding-bottom: 100px; }
 }
 
+
+/* EXPORT */
+.export-btn {
+  padding: 7px 16px;
+  background: var(--gold-pale);
+  color: var(--ink-mid);
+  border: 1.5px solid rgba(201,150,42,0.4);
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.export-btn:hover { background: var(--gold); color: white; border-color: var(--gold); }
+
+/* EXPORT MODAL */
+.export-backdrop {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(26,10,10,0.55);
+  z-index: 600;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+.export-backdrop.open { display: flex; }
+.export-modal {
+  background: var(--white);
+  border-radius: 16px;
+  padding: 24px;
+  width: 100%;
+  max-width: 480px;
+  box-shadow: 0 16px 60px rgba(107,15,15,0.25);
+  border: 1.5px solid rgba(201,150,42,0.3);
+  animation: modalIn 0.25s ease;
+}
+.export-modal h3 {
+  font-family: 'Cinzel', serif;
+  font-size: 0.95rem;
+  color: var(--red-dark);
+  letter-spacing: 2px;
+  margin-bottom: 14px;
+}
+.export-textarea {
+  width: 100%;
+  height: 280px;
+  padding: 12px;
+  border: 1.5px solid rgba(201,150,42,0.3);
+  border-radius: 8px;
+  font-family: 'Noto Sans SC', sans-serif;
+  font-size: 12px;
+  line-height: 1.7;
+  color: var(--ink);
+  background: var(--paper);
+  resize: none;
+  margin-bottom: 14px;
+}
+.export-actions {
+  display: flex;
+  gap: 10px;
+}
+.export-copy-btn {
+  flex: 2;
+  padding: 12px;
+  background: var(--red-dark);
+  border: none;
+  border-radius: 8px;
+  color: var(--gold-light);
+  font-family: 'Cinzel', serif;
+  font-size: 13px;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.export-copy-btn:hover { background: var(--red); }
+.export-close-btn {
+  flex: 1;
+  padding: 12px;
+  background: none;
+  border: 1.5px solid rgba(201,150,42,0.3);
+  border-radius: 8px;
+  color: var(--ink-mid);
+  font-family: 'Noto Sans SC', sans-serif;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.export-close-btn:hover { border-color: var(--gold); }
+
+@media (max-width: 600px) {
+  .export-backdrop { align-items: flex-end; padding: 0; }
+  .export-modal {
+    border-radius: 20px 20px 0 0;
+    max-width: 100%;
+    padding: 20px 18px 36px;
+  }
+  .export-textarea { height: 220px; }
+}
+
 </style>
 </head>
 <body>
@@ -1316,6 +1416,7 @@ footer {
   <details>
     <summary>🔑 Host Options</summary>
     <div class="host-controls">
+      <button class="export-btn" onclick="openExport()">📋 Export Order</button>
       <button class="danger-btn" onclick="clearAll()">🗑️ Clear Entire Order</button>
     </div>
   </details>
@@ -1329,7 +1430,10 @@ footer {
   <div class="drawer-handle" onclick="closeDrawer()"></div>
   <div class="drawer-header">
     <h2>The Order So Far</h2>
-    <button class="drawer-close" onclick="closeDrawer()">✕ Close</button>
+    <div style="display:flex;gap:8px;">
+      <button class="refresh-btn" onclick="openExport()">📋 Export</button>
+      <button class="drawer-close" onclick="closeDrawer()">✕ Close</button>
+    </div>
   </div>
   <div class="drawer-body" id="drawer-order-list"></div>
 </div>
@@ -1365,6 +1469,18 @@ footer {
     <div class="modal-actions">
       <button class="modal-cancel" onclick="closeModalDirect()">Cancel</button>
       <button class="modal-confirm" onclick="confirmOrder()">Add to Order →</button>
+    </div>
+  </div>
+</div>
+
+<!-- EXPORT MODAL -->
+<div class="export-backdrop" id="export-backdrop" onclick="closeExport(event)">
+  <div class="export-modal">
+    <h3>📋 Export Order</h3>
+    <textarea class="export-textarea" id="export-text" readonly></textarea>
+    <div class="export-actions">
+      <button class="export-copy-btn" id="export-copy-btn" onclick="copyExport()">📋 Copy to Clipboard</button>
+      <button class="export-close-btn" onclick="closeExportDirect()">Close</button>
     </div>
   </div>
 </div>
@@ -1975,6 +2091,87 @@ async function loadOrders() {
     renderOrders(orders);
   } catch(e) {
     document.getElementById('order-list').innerHTML = '<div class="empty-state">⚠️ Could not load orders</div>';
+  }
+}
+
+// ── EXPORT ───────────────────────────────────────────────────────────────────
+function buildExportText(orders) {
+  const lines = [];
+  lines.push('ROXTON FAMILY DINNER — NEW SKY');
+  lines.push('Sunday May 24 · 353 Spadina Ave');
+  lines.push('');
+
+  const keys = Object.keys(orders).filter(k => orders[k] && orders[k].length > 0);
+  if (keys.length === 0) {
+    lines.push('No dishes ordered yet.');
+    return lines.join('\n');
+  }
+
+  // Group by category in menu order
+  const byCat = {};
+  keys.forEach(key => {
+    const cat = key.split('::')[0];
+    if (!byCat[cat]) byCat[cat] = [];
+    byCat[cat].push(key);
+  });
+
+  MENU.forEach(cat => {
+    const catKeys = byCat[cat.cat];
+    if (!catKeys || catKeys.length === 0) return;
+    lines.push('── ' + cat.cat.toUpperCase() + ' ──');
+    catKeys.forEach(key => {
+      const dishName = key.split('::')[1] || key;
+      const people = orders[key];
+      const totalQty = people.reduce((sum, o) => sum + (o.qty || 1), 0);
+      const whoList = people.map(o => {
+        const notes = [o.gf ? 'GF' : '', o.veg ? 'Veg' : ''].filter(Boolean);
+        return o.name + (o.qty > 1 ? ' ×' + o.qty : '') + (notes.length ? ' (' + notes.join(', ') + ')' : '');
+      }).join(', ');
+      const qtyNote = totalQty > 1 ? ' [×' + totalQty + ']' : '';
+      lines.push('• ' + dishName + qtyNote);
+      lines.push('  → ' + whoList);
+    });
+    lines.push('');
+  });
+
+  lines.push('Total: ' + keys.length + ' dish' + (keys.length !== 1 ? 'es' : ''));
+  return lines.join('\n');
+}
+
+function openExport() {
+  const text = buildExportText(ordersCache);
+  document.getElementById('export-text').value = text;
+  document.getElementById('export-copy-btn').textContent = '📋 Copy to Clipboard';
+  document.getElementById('export-backdrop').classList.add('open');
+}
+
+function closeExport(e) {
+  if (e.target === document.getElementById('export-backdrop')) closeExportDirect();
+}
+
+function closeExportDirect() {
+  document.getElementById('export-backdrop').classList.remove('open');
+}
+
+function copyExport() {
+  const ta = document.getElementById('export-text');
+  ta.select();
+  ta.setSelectionRange(0, 99999); // mobile
+  try {
+    navigator.clipboard.writeText(ta.value).then(() => {
+      document.getElementById('export-copy-btn').textContent = '✓ Copied!';
+      setTimeout(() => {
+        document.getElementById('export-copy-btn').textContent = '📋 Copy to Clipboard';
+      }, 2000);
+    }).catch(() => {
+      document.execCommand('copy');
+      document.getElementById('export-copy-btn').textContent = '✓ Copied!';
+      setTimeout(() => {
+        document.getElementById('export-copy-btn').textContent = '📋 Copy to Clipboard';
+      }, 2000);
+    });
+  } catch(e) {
+    toast('Could not copy — select all and copy manually');
   }
 }
 
